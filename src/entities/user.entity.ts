@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   JoinColumn,
@@ -7,11 +8,8 @@ import {
 } from 'typeorm';
 import { PantryEntity } from './pantry.entity';
 
-
-
-
 @Entity()
-export class UserEntity {
+export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

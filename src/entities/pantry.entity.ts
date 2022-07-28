@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   ManyToOne,
@@ -9,7 +10,7 @@ import { UserEntity } from './user.entity';
 import { ItemEntity } from './item.entity';
 
 @Entity()
-export class PantryEntity {
+export class PantryEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
