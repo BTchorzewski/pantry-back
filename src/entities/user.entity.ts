@@ -22,6 +22,11 @@ export class UserEntity extends BaseEntity {
   @Column()
   password: string;
 
+  @Column({
+    default: false,
+  })
+  isActivated: boolean;
+
   @OneToMany((type) => PantryEntity, (pantry) => pantry.user)
   @JoinColumn()
   pantry: PantryEntity[];

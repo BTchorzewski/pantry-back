@@ -1,4 +1,44 @@
-import { Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { AuthService } from '../auth/auth.service';
+import { UserEntity } from '../entities/user.entity';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
-export class UserService {}
+export class UserService {
+  constructor(
+    @Inject(forwardRef(() => AuthService)) private authService: AuthService,
+    @Inject(forwardRef(() => EmailService)) private emailService: EmailService,
+  ) {}
+
+  async registerUser(email: string, password: string) {
+    try {
+      const fetchedEmails = await UserEntity.findOneBy({ email });
+      if (fetchedEmails !== null)
+        throw new HttpException('invalid email', HttpStatus.BAD_REQUEST);
+      const newUser = new UserEntity();
+      newUser.email = email;
+      newUser.password = await this.authService.hashPassword(password);
+      newUser.login = email.split('@')[0];
+      await newUser.save();
+      await this.emailService.registrationEmail(
+        {
+          email,
+          id: newUser.id,
+        },
+        this.emailService.registrationTemplate,
+      );
+
+      return {
+        msg: 'succed',
+      };
+    } catch (e) {
+      if (e instanceof HttpException) throw e;
+    }
+  }
+}
