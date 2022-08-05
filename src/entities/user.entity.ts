@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToMany,
@@ -26,6 +27,9 @@ export class UserEntity extends BaseEntity {
     default: false,
   })
   isActivated: boolean;
+
+  @CreateDateColumn({ name: 'createdAt' })
+  createdAt: Date;
 
   @OneToMany((type) => PantryEntity, (pantry) => pantry.user)
   @JoinColumn()

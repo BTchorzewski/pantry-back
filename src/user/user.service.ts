@@ -8,6 +8,7 @@ import {
 import { AuthService } from '../auth/auth.service';
 import { UserEntity } from '../entities/user.entity';
 import { EmailService } from '../email/email.service';
+import { Raw } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -35,10 +36,27 @@ export class UserService {
       );
 
       return {
-        msg: 'succed',
+        msg: 'succeed',
       };
     } catch (e) {
       if (e instanceof HttpException) throw e;
     }
+  }
+
+  async activateAccount(id: string) {
+    const user = await UserEntity.findOneBy({
+      id,
+      isActivated: false,
+      createdAt: Raw((createdAt) => `DATEDIFF(NOW(), ${createdAt}) < 3`),
+    });
+    if (user === null)
+      return {
+        msg: 'invalid link',
+      };
+    user.isActivated = true;
+    await user.save();
+    return {
+      msg: 'account activated.',
+    };
   }
 }

@@ -1,4 +1,13 @@
-import { Body, Controller, forwardRef, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  forwardRef,
+  Get,
+  Inject,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { UserRegistrationDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
@@ -11,5 +20,10 @@ export class UserController {
   @Post('/registration')
   userRegistration(@Body() { password, email }: UserRegistrationDto) {
     return this.userService.registerUser(email, password);
+  }
+
+  @Get('/activation/:userId')
+  accountActivation(@Param('userId', ParseUUIDPipe) id: string) {
+    return this.userService.activateAccount(id);
   }
 }
