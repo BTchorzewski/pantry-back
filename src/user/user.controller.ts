@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { UserRegistrationDto } from './dto/user.dto';
 import { UserService } from './user.service';
+import { UserRegistrationRes } from '../types';
 
 @Controller('user')
 export class UserController {
@@ -18,7 +19,9 @@ export class UserController {
   ) {}
 
   @Post('/registration')
-  userRegistration(@Body() { password, email }: UserRegistrationDto) {
+  userRegistration(
+    @Body() { password, email }: UserRegistrationDto,
+  ): Promise<UserRegistrationRes> {
     return this.userService.registerUser(email, password);
   }
 

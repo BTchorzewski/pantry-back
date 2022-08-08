@@ -9,6 +9,7 @@ import { AuthService } from '../auth/auth.service';
 import { UserEntity } from '../entities/user.entity';
 import { EmailService } from '../email/email.service';
 import { Raw } from 'typeorm';
+import { UserRegistrationRes } from '../types';
 
 @Injectable()
 export class UserService {
@@ -17,7 +18,10 @@ export class UserService {
     @Inject(forwardRef(() => EmailService)) private emailService: EmailService,
   ) {}
 
-  async registerUser(email: string, password: string) {
+  async registerUser(
+    email: string,
+    password: string,
+  ): Promise<UserRegistrationRes> {
     try {
       const fetchedEmails = await UserEntity.findOneBy({ email });
       if (fetchedEmails !== null)
