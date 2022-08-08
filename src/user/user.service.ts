@@ -40,7 +40,7 @@ export class UserService {
       );
 
       return {
-        msg: 'succeed',
+        message: 'succeed',
       };
     } catch (e) {
       if (e instanceof HttpException) throw e;
@@ -54,6 +54,7 @@ export class UserService {
       createdAt: Raw((createdAt) => `DATEDIFF(NOW(), ${createdAt}) < 3`),
     });
     if (user === null)
+      //@todo change respond format.
       return {
         msg: 'invalid link',
       };
