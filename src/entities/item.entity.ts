@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -14,6 +15,12 @@ export class ItemEntity extends BaseEntity {
 
   @Column()
   name: string;
+
+  @CreateDateColumn({ name: 'createdAt' })
+  createdAt: Date;
+
+  @Column()
+  expiration: Date;
 
   @ManyToOne((type) => PantryEntity, (pantry) => pantry.items)
   pantry: PantryEntity;

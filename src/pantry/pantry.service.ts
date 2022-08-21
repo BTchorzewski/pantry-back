@@ -6,7 +6,7 @@ export class PantryService {
     return 'getAllPantries';
   }
 
-  async addPantry(): Promise<any> {
-    return 'addPantry';
+  async addPantry(id: string): Promise<any> {
+
   }
 }

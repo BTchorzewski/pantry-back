@@ -1,5 +1,6 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PantryService } from './pantry.service';
+import { CreatePantryDto } from './dto/pantry.dto';
 
 @Controller('pantry')
 export class PantryController {
@@ -11,7 +12,7 @@ export class PantryController {
   }
 
   @Post('/')
-  addPantry() {
-    return this.pantryService.addPantry();
+  addPantry(@Body('userId') { userId }: CreatePantryDto) {
+    return this.pantryService.addPantry(userId);
   }
 }
