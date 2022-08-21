@@ -14,3 +14,7 @@ export interface UpdatePantryResponse {
   message: string;
   data: PantryEntity;
 }
+
+export interface DeletePantryResponse {
+  message: string;
+}

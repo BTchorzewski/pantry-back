@@ -1,4 +1,4 @@
-import { IsString, length } from 'class-validator';
+import { IsString, IsUUID } from 'class-validator';
 
 export class CreatePantryDto {
   @IsString()
@@ -17,4 +17,11 @@ export class UpdatePantryDto {
 export class FetchAllPantriesDto {
   @IsString()
   userId: string;
+}
+
+export class DeletePantryDto {
+  @IsUUID()
+  userId: string;
+  @IsUUID()
+  pantryId: string;
 }

@@ -1,16 +1,21 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
 import { PantryService } from './pantry.service';
-import { CreatePantryDto, UpdatePantryDto } from './dto/pantry.dto';
 import {
-  CreatePantryResponse,
-  FetchAllPantryResponse,
+  CreatePantryDto,
+  DeletePantryDto,
+  UpdatePantryDto,
+} from './dto/pantry.dto';
+import {
+  CreatePantryResponse, DeletePantryResponse,
+  FetchAllPantryResponse, UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
 
 @Controller('pantry')
@@ -31,7 +36,12 @@ export class PantryController {
   }
 
   @Put('/')
-  updatePantry(@Body() body: UpdatePantryDto): Promise<any> {
+  updatePantry(@Body() body: UpdatePantryDto): Promise<UpdatePantryResponse> {
     return this.pantryService.updatePantry(body);
+  }
+
+  @Delete('/')
+  deletePantry(@Body() body: DeletePantryDto): Promise<DeletePantryResponse> {
+    return this.pantryService.deletePantry(body);
   }
 }

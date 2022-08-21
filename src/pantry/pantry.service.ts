@@ -1,9 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { PantryEntity } from '../entities/pantry.entity';
-import { CreatePantryDto, UpdatePantryDto } from './dto/pantry.dto';
+import {
+  CreatePantryDto,
+  DeletePantryDto,
+  UpdatePantryDto,
+} from './dto/pantry.dto';
 import {
   CreatePantryResponse,
+  DeletePantryResponse,
   FetchAllPantryResponse,
   UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
@@ -61,6 +66,31 @@ export class PantryService {
     return {
       message: 'Succeed',
       data: pantry,
+    };
+  }
+  //@todo look into it if we need userId. How to connect with auth?
+  async deletePantry({
+    pantryId,
+    userId,
+  }: DeletePantryDto): Promise<DeletePantryResponse> {
+    const user = await UserEntity.findOneBy({ id: userId });
+    if (user === null)
+      throw new HttpException(
+        'The user was not found.',
+        HttpStatus.BAD_REQUEST,
+      );
+    const pantry = await PantryEntity.findOneBy({ id: pantryId });
+    if (pantry === null)
+      throw new HttpException(
+        'The pantry was not found.',
+        HttpStatus.BAD_REQUEST,
+      );
+    //@todo remove items from the pantry.
+
+    await pantry.remove();
+
+    return {
+      message: 'Succeed',
     };
   }
 }
