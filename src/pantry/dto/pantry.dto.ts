@@ -6,3 +6,8 @@ export class CreatePantryDto {
   @IsString()
   name: string;
 }
+
+export class FetchAllPatriesDto {
+  @IsString()
+  userId: string;
+}

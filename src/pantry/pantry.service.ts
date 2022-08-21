@@ -2,11 +2,20 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { PantryEntity } from '../entities/pantry.entity';
 import { CreatePantryDto } from './dto/pantry.dto';
-import { CreatePantryResponse } from '../interfaces/pantry/pantry';
+import {
+  CreatePantryResponse,
+  FetchAllPantryResponse,
+} from '../interfaces/pantry/pantry';
 @Injectable()
 export class PantryService {
-  async getAllPantries(): Promise<any> {
-    return 'getAllPantries';
+  async fetchAllPantriesById(userId: string): Promise<FetchAllPantryResponse> {
+    const pantries = await PantryEntity.findBy({
+      user: {
+        id: userId,
+      },
+    });
+
+    return { message: 'Succeed', data: pantries };
   }
 
   async addPantry({
