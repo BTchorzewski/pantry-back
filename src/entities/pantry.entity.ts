@@ -17,7 +17,7 @@ export class PantryEntity extends BaseEntity {
   @Column()
   name: string;
 
-  @ManyToOne((type) => UserEntity, (user) => user.pantry)
+  @ManyToOne((type) => UserEntity, (user) => user.pantries)
   user: UserEntity;
 
   @OneToMany((type) => ItemEntity, (item) => item.pantry)

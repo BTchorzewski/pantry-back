@@ -33,5 +33,5 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany((type) => PantryEntity, (pantry) => pantry.user)
   @JoinColumn()
-  pantry: PantryEntity[];
+  pantries: PantryEntity[];
 }
