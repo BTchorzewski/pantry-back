@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { PantryEntity } from '../entities/pantry.entity';
-import { CreatePantryDto } from './dto/pantry.dto';
+import { CreatePantryDto, UpdatePantryDto } from './dto/pantry.dto';
 import {
   CreatePantryResponse,
   FetchAllPantryResponse,
+  UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
 @Injectable()
 export class PantryService {
@@ -37,6 +38,29 @@ export class PantryService {
     return {
       pantryId: newPantry.id,
       message: 'The pantry has been created.',
+    };
+  }
+
+  async updatePantry({
+    userId,
+    name,
+  }: UpdatePantryDto): Promise<UpdatePantryResponse> {
+    const pantry = await PantryEntity.findOneBy({
+      user: {
+        id: userId,
+      },
+    });
+    if (pantry === null)
+      throw new HttpException(
+        'The pantry was not found.',
+        HttpStatus.BAD_REQUEST,
+      );
+    pantry.name = name;
+    await pantry.save();
+
+    return {
+      message: 'Succeed',
+      data: pantry,
     };
   }
 }

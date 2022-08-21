@@ -9,3 +9,8 @@ export interface FetchAllPantryResponse {
   message: string;
   data: PantryEntity[];
 }
+
+export interface UpdatePantryResponse {
+  message: string;
+  data: PantryEntity;
+}

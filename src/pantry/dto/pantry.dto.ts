@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, length } from 'class-validator';
 
 export class CreatePantryDto {
   @IsString()
@@ -7,7 +7,14 @@ export class CreatePantryDto {
   name: string;
 }
 
-export class FetchAllPatriesDto {
+export class UpdatePantryDto {
+  @IsString()
+  userId: string;
+  @IsString()
+  name: string;
+}
+
+export class FetchAllPantriesDto {
   @IsString()
   userId: string;
 }
