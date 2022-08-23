@@ -10,6 +10,7 @@ import { UserEntity } from '../entities/user.entity';
 import { EmailService } from '../email/email.service';
 import { Raw } from 'typeorm';
 import { UserRegistrationRes } from '../types';
+import { UserForLogin } from '../interfaces/user/user';
 
 @Injectable()
 export class UserService {
@@ -63,5 +64,15 @@ export class UserService {
     return {
       msg: 'account activated.',
     };
+  }
+  async findUserByName(email: string): Promise<UserForLogin | null> {
+    return await UserEntity.findOneOrFail({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+      },
+    });
   }
 }
