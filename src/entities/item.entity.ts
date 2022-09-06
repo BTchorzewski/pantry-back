@@ -24,4 +24,5 @@ export class ItemEntity extends BaseEntity {
 
   @ManyToOne((type) => PantryEntity, (pantry) => pantry.items)
   pantry: PantryEntity;
+
 }

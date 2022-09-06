@@ -44,4 +44,6 @@ export class PantryController {
   deletePantry(@Body() body: DeletePantryDto): Promise<DeletePantryResponse> {
     return this.pantryService.deletePantry(body);
   }
+
+
 }

@@ -12,6 +12,7 @@ import { UserEntity } from './entities/user.entity';
 import { PantryEntity } from './entities/pantry.entity';
 import { ItemEntity } from './entities/item.entity';
 import { EmailModule } from './email/email.module';
+import { ItemModule } from './item/item.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -29,6 +30,7 @@ import { EmailModule } from './email/email.module';
     AdminModule,
     AuthModule,
     EmailModule,
+    ItemModule,
   ],
   controllers: [AppController],
   providers: [AppService],
