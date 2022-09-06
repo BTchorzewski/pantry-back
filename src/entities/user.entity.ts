@@ -3,10 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
+  JoinColumn, JoinTable,
   OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+  PrimaryGeneratedColumn
+} from "typeorm";
 import { PantryEntity } from './pantry.entity';
 
 @Entity()
@@ -31,7 +31,7 @@ export class UserEntity extends BaseEntity {
   @CreateDateColumn({ name: 'createdAt' })
   createdAt: Date;
 
-  @OneToMany((type) => PantryEntity, (pantry) => pantry.user)
-  @JoinColumn()
+  @OneToMany((type) => PantryEntity, (pantry) => pantry.user, { eager: true })
+  @JoinTable()
   pantries: PantryEntity[];
 }

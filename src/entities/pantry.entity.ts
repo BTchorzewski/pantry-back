@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -20,6 +21,7 @@ export class PantryEntity extends BaseEntity {
   @ManyToOne((type) => UserEntity, (user) => user.pantries)
   user: UserEntity;
 
-  @OneToMany((type) => ItemEntity, (item) => item.pantry)
+  @OneToMany((type) => ItemEntity, (item) => item.pantry, { eager: true })
+  @JoinTable()
   items: ItemEntity[];
 }

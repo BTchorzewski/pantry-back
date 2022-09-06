@@ -11,6 +11,8 @@ export class UpdatePantryDto {
   @IsString()
   userId: string;
   @IsString()
+  pantryId: string;
+  @IsString()
   name: string;
 }
 

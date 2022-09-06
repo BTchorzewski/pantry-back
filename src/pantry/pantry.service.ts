@@ -28,7 +28,11 @@ export class PantryService {
     name,
     userId: id,
   }: CreatePantryDto): Promise<CreatePantryResponse> {
-    const user = await UserEntity.findOneBy({ id });
+    const [user] = await UserEntity.find({
+      where: {
+        id,
+      },
+    });
 
     if (user === null)
       throw new HttpException('User was not found.', HttpStatus.BAD_REQUEST);
@@ -37,7 +41,6 @@ export class PantryService {
     newPantry.user = user;
     newPantry.name = name;
     await newPantry.save();
-    user.pantries = [];
     user.pantries.push(newPantry);
     await user.save();
     return {
@@ -49,11 +52,13 @@ export class PantryService {
   async updatePantry({
     userId,
     name,
+    pantryId,
   }: UpdatePantryDto): Promise<UpdatePantryResponse> {
     const pantry = await PantryEntity.findOneBy({
       user: {
         id: userId,
       },
+      id: pantryId,
     });
     if (pantry === null)
       throw new HttpException(
@@ -79,7 +84,10 @@ export class PantryService {
         'The user was not found.',
         HttpStatus.BAD_REQUEST,
       );
-    const pantry = await PantryEntity.findOneBy({ id: pantryId });
+    const pantry = await PantryEntity.findOneBy({
+      id: pantryId,
+      user: { id: userId },
+    });
     if (pantry === null)
       throw new HttpException(
         'The pantry was not found.',
