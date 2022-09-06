@@ -4,6 +4,6 @@ import { PantryService } from './pantry.service';
 
 @Module({
   controllers: [PantryController],
-  providers: [PantryService]
+  providers: [PantryService],
 })
 export class PantryModule {}
