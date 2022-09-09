@@ -65,13 +65,14 @@ export class UserService {
       msg: 'account activated.',
     };
   }
-  async findUserByName(email: string): Promise<UserForLogin | null> {
-    return await UserEntity.findOneOrFail({
+  async findUserByEmail(email: string): Promise<UserForLogin | null> {
+    return UserEntity.findOne({
       where: { email },
       select: {
         id: true,
         email: true,
         password: true,
+        pantries: false,
       },
     });
   }
