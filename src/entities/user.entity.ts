@@ -3,10 +3,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn, JoinTable,
+  JoinColumn,
+  JoinTable,
   OneToMany,
-  PrimaryGeneratedColumn
-} from "typeorm";
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PantryEntity } from './pantry.entity';
 
 @Entity()
@@ -22,6 +23,12 @@ export class UserEntity extends BaseEntity {
 
   @Column()
   password: string;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  accessToken: string;
 
   @Column({
     default: false,

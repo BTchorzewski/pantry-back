@@ -8,6 +8,8 @@ import {
 import { hash, compare } from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { v4 as uuid } from 'uuid';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -41,8 +43,10 @@ export class AuthService {
     };
   }
 
-  async login(user: any) {
-    return { results: user };
+  async login(user: { id: string; email: string }) {
+    const newUser = await this.userService.findUserByEmail(user.email);
+
+    return { results: newUser };
   }
 
   logout() {
