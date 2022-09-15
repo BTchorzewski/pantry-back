@@ -6,11 +6,15 @@ import {
   Post,
   UseGuards,
   Request,
+  Res,
+  Get,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { UserObj } from '../decorators/userObj.decorators';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -26,5 +30,11 @@ export class AuthController {
   @Post('/logout')
   logout(): Promise<any> {
     return this.authService.logout();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/test')
+  testJwt(@Req() req): Promise<any> {
+    return req.user;
   }
 }

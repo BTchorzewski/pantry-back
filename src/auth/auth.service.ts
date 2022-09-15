@@ -4,12 +4,13 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { hash, compare } from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuid } from 'uuid';
-
+import { UserEntity } from '../entities/user.entity';
 @Injectable()
 export class AuthService {
   constructor(
@@ -43,10 +44,32 @@ export class AuthService {
     };
   }
 
+  async validateToken(userId, token): Promise<any> {
+    const user = await UserEntity.findOneBy({
+      accessToken: token,
+      id: userId,
+    });
+
+    if (user === null) {
+      throw new UnauthorizedException();
+    }
+
+    return {
+      user,
+    };
+  }
+
   async login(user: { id: string; email: string }) {
     const newUser = await this.userService.findUserByEmail(user.email);
-
-    return { results: newUser };
+    if (newUser === null) throw new UnauthorizedException();
+    const accessToken = uuid();
+    newUser.accessToken = accessToken;
+    await newUser.save();
+    const jwt = this.jwtService.sign({
+      id: newUser.id,
+      token: newUser.accessToken,
+    });
+    return { jwt };
   }
 
   logout() {

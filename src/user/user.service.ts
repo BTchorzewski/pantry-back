@@ -10,7 +10,7 @@ import { UserEntity } from '../entities/user.entity';
 import { EmailService } from '../email/email.service';
 import { Raw } from 'typeorm';
 import { UserRegistrationRes } from '../types';
-import { UserForLogin } from '../interfaces/user/user';
+import { LoggedUser, UserForLogin } from '../interfaces/user/user';
 
 @Injectable()
 export class UserService {
@@ -65,15 +65,9 @@ export class UserService {
       msg: 'account activated.',
     };
   }
-  async findUserByEmail(email: string): Promise<UserForLogin | null> {
+  async findUserByEmail(email: string): Promise<UserEntity | null> {
     return UserEntity.findOne({
       where: { email },
-      select: {
-        id: true,
-        email: true,
-        password: true,
-        pantries: false,
-      },
     });
   }
 }
