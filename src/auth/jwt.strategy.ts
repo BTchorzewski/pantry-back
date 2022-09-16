@@ -20,6 +20,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       payload.id,
       payload.token,
     );
-    return { userId: payload.id, results };
+    return { userId: payload.id};
   }
 }
