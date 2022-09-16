@@ -3,8 +3,6 @@ import { Type } from 'class-transformer';
 
 export class CreateItemDto {
   @IsUUID()
-  userId: string;
-  @IsUUID()
   pantryId: string;
   @IsString()
   name: string;

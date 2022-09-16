@@ -15,6 +15,7 @@ import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { UserObj } from '../decorators/userObj.decorators';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { UserId } from '../decorators/UserId';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -27,9 +28,10 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  @Post('/logout')
-  logout(): Promise<any> {
-    return this.authService.logout();
+  @UseGuards(JwtAuthGuard)
+  @Get('/logout')
+  logout(@UserId() id): Promise<any> {
+    return this.authService.logout(id);
   }
 
   @UseGuards(JwtAuthGuard)

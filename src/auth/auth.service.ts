@@ -72,7 +72,13 @@ export class AuthService {
     return { jwt };
   }
 
-  logout() {
-    return Promise.resolve(undefined);
+  async logout(id: string) {
+    const user = await UserEntity.findOneBy({ id });
+    if (user === null) throw new UnauthorizedException();
+    user.accessToken = null;
+    await user.save();
+    return {
+      message: 'Your are logged out.',
+    };
   }
 }

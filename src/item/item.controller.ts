@@ -1,18 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { ItemService } from './item.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { UserId } from '../decorators/UserId';
 
 @Controller('item')
 export class ItemController {
   constructor(private readonly itemService: ItemService) {}
 
-  @Post()
-  create(@Body() createItemDto: CreateItemDto) {
-    return this.itemService.create(createItemDto);
+  @UseGuards(JwtAuthGuard)
+  @Post('/')
+  create(@Body() createItemDto: CreateItemDto, @UserId() userId) {
+    return this.itemService.create(createItemDto, userId);
   }
 
-  @Get()
+  @Get('/')
   findAll() {
     return this.itemService.findAll();
   }

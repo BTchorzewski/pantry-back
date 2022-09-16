@@ -14,8 +14,10 @@ import {
   UpdatePantryDto,
 } from './dto/pantry.dto';
 import {
-  CreatePantryResponse, DeletePantryResponse,
-  FetchAllPantryResponse, UpdatePantryResponse,
+  CreatePantryResponse,
+  DeletePantryResponse,
+  FetchAllPantryResponse,
+  UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
 
 @Controller('pantry')
@@ -44,6 +46,4 @@ export class PantryController {
   deletePantry(@Body() body: DeletePantryDto): Promise<DeletePantryResponse> {
     return this.pantryService.deletePantry(body);
   }
-
-
 }
