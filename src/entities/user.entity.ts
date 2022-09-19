@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PantryEntity } from './pantry.entity';
+import { ItemEntity } from './item.entity';
 
 @Entity()
 export class UserEntity extends BaseEntity {
@@ -41,4 +42,7 @@ export class UserEntity extends BaseEntity {
   @OneToMany((type) => PantryEntity, (pantry) => pantry.user, { eager: true })
   @JoinTable()
   pantries: PantryEntity[];
+
+  @OneToMany((type) => ItemEntity, (item) => item.user)
+  items: ItemEntity[];
 }

@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PantryEntity } from './pantry.entity';
+import { UserEntity } from './user.entity';
 
 @Entity()
 export class ItemEntity extends BaseEntity {
@@ -24,4 +25,7 @@ export class ItemEntity extends BaseEntity {
 
   @ManyToOne((type) => PantryEntity, (pantry) => pantry.items)
   pantry: PantryEntity;
+
+  @ManyToOne(() => UserEntity, (user) => user.items)
+  user: UserEntity;
 }
