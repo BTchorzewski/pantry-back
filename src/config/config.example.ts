@@ -7,5 +7,9 @@
 //     username: 'username',
 //     password: 'password',
 //     database: 'database',
-//   }
+//   },
+//   jwt: {
+//     accessToken: 'access token secrete key',
+//     refreshToken: 'refresh token secrete key',
+//   },
 // };
