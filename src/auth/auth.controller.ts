@@ -1,21 +1,18 @@
 import {
-  Body,
   Controller,
   forwardRef,
   Inject,
   Post,
   UseGuards,
-  Request,
-  Res,
   Get,
+  Request,
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { UserObj } from '../decorators/userObj.decorators';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { UserId } from '../decorators/UserId';
+import { AccessJwtGuard } from '../guards/access-jwt.guard';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -28,15 +25,16 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/logout')
-  logout(@UserId() id): Promise<any> {
+  @UseGuards(AccessJwtGuard)
+  logout(@UserId() id, @Req() req): Promise<any> {
+    console.log({ logout: id });
     return this.authService.logout(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('/test')
-  testJwt(@Req() req): Promise<any> {
-    return req.user;
+  @UseGuards(AccessJwtGuard)
+  testJwt(@Req() req): any {
+    return req.user.id;
   }
 }

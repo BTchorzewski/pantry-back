@@ -29,7 +29,7 @@ export class UserEntity extends BaseEntity {
     nullable: true,
     default: null,
   })
-  accessToken: string;
+  refreshToken: string;
 
   @Column({
     default: false,

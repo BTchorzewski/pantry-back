@@ -23,8 +23,8 @@ import {
 } from '../interfaces/pantry/pantry';
 import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { UserId } from '../decorators/UserId';
+import { AccessJwtGuard } from '../guards/access-jwt.guard';
 
 @Controller('pantry')
 export class PantryController {
@@ -56,7 +56,7 @@ export class PantryController {
     return this.pantryService.deletePantry(body);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessJwtGuard)
   @Post('/:pantryId/item')
   addItemToPantry(
     @UserId() userId: string,
@@ -65,7 +65,7 @@ export class PantryController {
   ): Promise<any> {
     return this.itemService.create(item, userId, pantryId);
   }
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AccessJwtGuard)
   @Put('/:pantryId/item/:itemId')
   updateItemToPantry(
     @UserId() userId: string,
