@@ -2,19 +2,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserEntity } from '../entities/user.entity';
 import { PantryEntity } from '../entities/pantry.entity';
 import {
-  CreatePantryDto,
-  DeletePantryDto,
-  UpdatePantryDto,
-} from './dto/pantry.dto';
-import {
   CreatePantryResponse,
   DeletePantryResponse,
   FetchAllPantryResponse,
   UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
+import { ItemEntity } from '../entities/item.entity';
+
 @Injectable()
 export class PantryService {
-  async fetchAllPantriesById(userId: string): Promise<FetchAllPantryResponse> {
+  async fetchAllPantries(userId: string): Promise<FetchAllPantryResponse> {
     const pantries = await PantryEntity.findBy({
       user: {
         id: userId,
@@ -24,17 +21,17 @@ export class PantryService {
     return { message: 'Succeed', data: pantries };
   }
 
-  async addPantry({
-    name,
-    userId: id,
-  }: CreatePantryDto): Promise<CreatePantryResponse> {
+  async createPantry(
+    userId: string,
+    name: string,
+  ): Promise<CreatePantryResponse> {
     const [user] = await UserEntity.find({
       where: {
-        id,
+        id: userId,
       },
     });
 
-    if (user === null)
+    if (!user)
       throw new HttpException('User was not found.', HttpStatus.BAD_REQUEST);
 
     const newPantry = new PantryEntity();
@@ -49,11 +46,11 @@ export class PantryService {
     };
   }
 
-  async updatePantry({
-    userId,
-    name,
-    pantryId,
-  }: UpdatePantryDto): Promise<UpdatePantryResponse> {
+  async updatePantry(
+    userId: string,
+    pantryId: string,
+    newName: string,
+  ): Promise<UpdatePantryResponse> {
     const pantry = await PantryEntity.findOneBy({
       user: {
         id: userId,
@@ -65,7 +62,7 @@ export class PantryService {
         'The pantry was not found.',
         HttpStatus.BAD_REQUEST,
       );
-    pantry.name = name;
+    pantry.name = newName;
     await pantry.save();
 
     return {
@@ -73,13 +70,12 @@ export class PantryService {
       data: pantry,
     };
   }
-  //@todo look into it if we need userId. How to connect with auth?
-  async deletePantry({
-    pantryId,
-    userId,
-  }: DeletePantryDto): Promise<DeletePantryResponse> {
+  async deletePantry(
+    userId: string,
+    pantryId: string,
+  ): Promise<DeletePantryResponse> {
     const user = await UserEntity.findOneBy({ id: userId });
-    if (user === null)
+    if (!user)
       throw new HttpException(
         'The user was not found.',
         HttpStatus.BAD_REQUEST,
@@ -93,7 +89,11 @@ export class PantryService {
         'The pantry was not found.',
         HttpStatus.BAD_REQUEST,
       );
-    //@todo remove items from the pantry.
+
+    await ItemEntity.createQueryBuilder()
+      .where('userId = :id AND pantryId = :pantryId', { id: userId, pantryId })
+      .delete()
+      .execute();
 
     await pantry.remove();
 
