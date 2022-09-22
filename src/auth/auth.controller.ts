@@ -10,9 +10,12 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
-import { UserObj } from '../decorators/userObj.decorators';
-import { UserId } from '../decorators/UserId';
+import { UserObj } from '../decorators/userObj.decorator';
+import { UserId } from '../decorators/userId.decorator';
 import { AccessJwtGuard } from '../guards/access-jwt.guard';
+import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
+import { RefreshToken } from '../decorators/RefreshToken.decorator';
+import { TokensRes } from '../interfaces';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -27,14 +30,13 @@ export class AuthController {
 
   @Get('/logout')
   @UseGuards(AccessJwtGuard)
-  logout(@UserId() id, @Req() req): Promise<any> {
-    console.log({ logout: id });
+  logout(@UserId() id): Promise<any> {
     return this.authService.logout(id);
   }
 
-  @Get('/test')
-  @UseGuards(AccessJwtGuard)
-  testJwt(@Req() req): any {
-    return req.user.id;
+  @Get('/refresh-token')
+  @UseGuards(RefreshJwtGuard)
+  refreshToken(@UserId() id, @RefreshToken() token): Promise<TokensRes> {
+    return this.authService.refreshToken(id, token);
   }
 }

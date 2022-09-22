@@ -11,7 +11,7 @@ import {
 import { ItemService } from './item.service';
 import { CreateItemDto } from '../pantry/dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
-import { UserId } from '../decorators/UserId';
+import { UserId } from '../decorators/userId.decorator';
 
 @Controller('item')
 export class ItemController {

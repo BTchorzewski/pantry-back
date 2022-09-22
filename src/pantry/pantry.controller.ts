@@ -23,7 +23,7 @@ import {
 } from '../interfaces/pantry/pantry';
 import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
-import { UserId } from '../decorators/UserId';
+import { UserId } from '../decorators/userId.decorator';
 import { AccessJwtGuard } from '../guards/access-jwt.guard';
 
 @Controller('pantry')
