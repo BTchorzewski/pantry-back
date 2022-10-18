@@ -23,9 +23,11 @@ import { UserId } from '../decorators/userId.decorator';
 import { AccessJwtGuard } from '../guards/access-jwt.guard';
 import { MockUserId } from '../decorators/mockUserId.decorator';
 import mock = jest.mock;
-import { DeletedItemResponse, GetItemResponse } from "../interfaces";
+import { DeletedItemResponse, GetItemResponse } from '../interfaces';
 import { UpdateItemDto } from '../item/dto/update-item.dto';
+import { ApiUseTags } from '@nestjs/swagger';
 
+@ApiUseTags('pantry')
 @Controller('pantry')
 export class PantryController {
   constructor(
