@@ -6,7 +6,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { EmailService } from '../email/email.service';
 import { Raw } from 'typeorm';
 import { UserRegistrationRes } from '../types';

@@ -8,8 +8,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { PantryEntity } from './pantry.entity';
-import { ItemEntity } from './item.entity';
+import { PantryEntity } from '../../entities/pantry.entity';
+import { ItemEntity } from '../../entities/item.entity';
 
 @Entity()
 export class UserEntity extends BaseEntity {

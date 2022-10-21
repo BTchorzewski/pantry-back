@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { UserEntity } from './user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 import { ItemEntity } from './item.entity';
 
 @Entity()

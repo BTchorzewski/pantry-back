@@ -3,7 +3,7 @@ import { CreateItemDto } from '../pantry/dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { PantryEntity } from '../entities/pantry.entity';
 import { ItemEntity } from '../entities/item.entity';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 import {
   CreatedItemResponse,
   DeletedItemResponse,

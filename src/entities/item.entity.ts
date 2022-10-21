@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { PantryEntity } from './pantry.entity';
-import { UserEntity } from './user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 
 @Entity()
 export class ItemEntity extends BaseEntity {
