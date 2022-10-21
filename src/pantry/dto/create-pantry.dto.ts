@@ -1,11 +1,8 @@
 import { IsString, IsUUID } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePantryDto {
-  @IsString()
-  name: string;
-}
-
-export class UpdatePantryDto {
+  @ApiProperty()
   @IsString()
   name: string;
 }

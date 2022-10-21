@@ -16,8 +16,7 @@ import { AccessJwtGuard } from '../guards/access-jwt.guard';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { RefreshToken } from '../decorators/RefreshToken.decorator';
 import { TokensRes } from '../interfaces';
-import { ApiUseTags } from '@nestjs/swagger';
-@ApiUseTags('authentication')
+
 @Controller('auth')
 export class AuthController {
   constructor(

@@ -9,12 +9,10 @@ import {
   Post,
 } from '@nestjs/common';
 
-import { ApiUseTags } from '@nestjs/swagger';
 import { UserRegistrationDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import { UserRegistrationRes } from '../types';
 
-@ApiUseTags('user')
 @Controller('user')
 export class UserController {
   constructor(

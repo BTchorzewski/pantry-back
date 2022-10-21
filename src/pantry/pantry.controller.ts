@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { PantryService } from './pantry.service';
-import { CreatePantryDto, UpdatePantryDto } from './dto/pantry.dto';
+import { CreatePantryDto } from './dto/create-pantry.dto';
 import {
   CreatePantryResponse,
   DeletePantryResponse,
@@ -25,9 +25,8 @@ import { MockUserId } from '../decorators/mockUserId.decorator';
 import mock = jest.mock;
 import { DeletedItemResponse, GetItemResponse } from '../interfaces';
 import { UpdateItemDto } from '../item/dto/update-item.dto';
-import { ApiUseTags } from '@nestjs/swagger';
+import { UpdatePantryDto } from './dto/update-pantry.dto';
 
-@ApiUseTags('pantry')
 @Controller('pantry')
 export class PantryController {
   constructor(
