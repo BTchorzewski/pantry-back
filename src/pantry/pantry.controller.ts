@@ -39,9 +39,9 @@ export class PantryController {
   // @UseGuards(AccessJwtGuard)
   getPantries(
     // @UserId() userId,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<FetchAllPantryResponse> {
-    return this.pantryService.fetchAllPantries(mockedUserId);
+    return this.pantryService.fetchAllPantries(userId);
   }
 
   @Post('/')
@@ -49,9 +49,9 @@ export class PantryController {
   createPantry(
     @Body() { name }: CreatePantryDto,
     // @UserId() userId,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<CreatePantryResponse> {
-    return this.pantryService.createPantry(mockedUserId, name);
+    return this.pantryService.createPantry(userId, name);
   }
 
   @Put('/:pantryId')
@@ -60,9 +60,9 @@ export class PantryController {
     @Body() { name }: UpdatePantryDto,
     // @UserId() userId,
     @Param('pantryId') pantryId,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<UpdatePantryResponse> {
-    return this.pantryService.updatePantry(mockedUserId, pantryId, name);
+    return this.pantryService.updatePantry(userId, pantryId, name);
   }
 
   @Delete('/:pantryId')
@@ -70,9 +70,9 @@ export class PantryController {
   deletePantry(
     // @UserId() userId,
     @Param('pantryId', ParseUUIDPipe) pantryId,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<DeletePantryResponse> {
-    return this.pantryService.deletePantry(mockedUserId, pantryId);
+    return this.pantryService.deletePantry(userId, pantryId);
   }
 
   @Get('/item/:itemId')
@@ -80,9 +80,9 @@ export class PantryController {
   getItemById(
     @Param('itemId', ParseUUIDPipe) itemId,
     // @UserId() userId,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<GetItemResponse> {
-    return this.itemService.findOne(itemId, mockedUserId);
+    return this.itemService.findOne(itemId, userId);
   }
 
   @Post('/:pantryId/item')
@@ -91,9 +91,9 @@ export class PantryController {
     // @UserId() userId: string,
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
     @Body() item: CreateItemDto,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<any> {
-    return this.itemService.create(item, mockedUserId, pantryId);
+    return this.itemService.create(item, userId, pantryId);
   }
 
   @Put('/item/:itemId')
@@ -103,9 +103,9 @@ export class PantryController {
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
     @Body() item: CreateItemDto,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<any> {
-    return this.itemService.updateItem(item, mockedUserId, pantryId, itemId);
+    return this.itemService.updateItem(item, userId, pantryId, itemId);
   }
 
   @Delete('/item/:itemId')
@@ -113,8 +113,8 @@ export class PantryController {
   deleteItem(
     // @UserId() userId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
-    @MockedUserId() mockedUserId,
+    @MockedUserId() userId,
   ): Promise<DeletedItemResponse> {
-    return this.itemService.deleteItemById(itemId, mockedUserId);
+    return this.itemService.deleteItemById(itemId, userId);
   }
 }
