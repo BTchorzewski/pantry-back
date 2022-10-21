@@ -51,7 +51,7 @@ docker run --rm -it -p 3003:80 -p 2525:25 rnwood/smtp4dev
 
 | JSON Body | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `username` | `string` | **Required**. A user login |
+| `email` | `string` | **Required**. A user login |
 | `password` | `string` | **Required**. A user password. |
 
 ```http 
