@@ -8,10 +8,11 @@ import {
   ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
-
-import { UserRegistrationDto } from './dto/user.dto';
+import { UserRegistrationDto } from './dto/user-registration.dto';
 import { UserService } from './user.service';
 import { UserRegistrationRes } from '../types';
+import { ApiBadRequestResponse, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { invalidRegistrationResponse, validRegistrationResponse } from './api-models/valid-registration-response';
 
 @Controller('user')
 export class UserController {
@@ -19,6 +20,14 @@ export class UserController {
     @Inject(forwardRef(() => UserService)) private userService: UserService,
   ) {}
 
+  @ApiBody({ type: UserRegistrationDto })
+  @ApiResponse({
+    status: 201,
+    type: validRegistrationResponse,
+  })
+  @ApiBadRequestResponse({
+    type: invalidRegistrationResponse,
+  })
   @Post('/registration')
   userRegistration(
     @Body() { password, email }: UserRegistrationDto,

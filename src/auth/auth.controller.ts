@@ -16,6 +16,8 @@ import { AccessJwtGuard } from '../guards/access-jwt.guard';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { RefreshToken } from '../decorators/RefreshToken.decorator';
 import { TokensRes } from '../interfaces';
+import { ApiAcceptedResponse, ApiBody, ApiParam } from '@nestjs/swagger';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -24,6 +26,8 @@ export class AuthController {
   ) {}
 
   @Post('/login')
+  @ApiBody({ type: LoginDto })
+  @ApiAcceptedResponse({})
   @UseGuards(LocalAuthGuard)
   login(@UserObj() user): Promise<any> {
     return this.authService.login(user);
