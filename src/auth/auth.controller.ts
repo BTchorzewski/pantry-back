@@ -7,6 +7,8 @@ import {
   Get,
   Request,
   Req,
+  HttpCode,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
@@ -16,19 +18,35 @@ import { AccessJwtGuard } from '../guards/access-jwt.guard';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { RefreshToken } from '../decorators/RefreshToken.decorator';
 import { TokensRes } from '../interfaces';
-import { ApiAcceptedResponse, ApiBody, ApiParam } from '@nestjs/swagger';
+import {
+  ApiAcceptedResponse,
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
+import {
+  InvalidEmailResSwagger,
+  UnauthorizedRespondSwagger,
+  ValidLoginResSwagger,
+} from './response-swagger/response';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
     @Inject(forwardRef(() => AuthService)) private authService: AuthService,
   ) {}
 
+  @ApiAcceptedResponse({ type: ValidLoginResSwagger })
+  @ApiUnauthorizedResponse({ type: UnauthorizedRespondSwagger })
+  @ApiBadRequestResponse({ type: InvalidEmailResSwagger })
   @Post('/login')
   @ApiBody({ type: LoginDto })
-  @ApiAcceptedResponse({})
   @UseGuards(LocalAuthGuard)
+  @HttpCode(202)
   login(@UserObj() user): Promise<any> {
     return this.authService.login(user);
   }

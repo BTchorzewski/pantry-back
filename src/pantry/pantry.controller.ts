@@ -26,8 +26,9 @@ import mock = jest.mock;
 import { DeletedItemResponse, GetItemResponse } from '../interfaces';
 import { UpdateItemDto } from '../item/dto/update-item.dto';
 import { UpdatePantryDto } from './dto/update-pantry.dto';
-import {} from '@nestjs/swagger';
+import {ApiTags} from '@nestjs/swagger';
 
+@ApiTags('Pantry and Items')
 @Controller('pantry')
 export class PantryController {
   constructor(

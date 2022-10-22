@@ -11,12 +11,13 @@ import {
 import { UserRegistrationDto } from './dto/user-registration.dto';
 import { UserService } from './user.service';
 import { UserRegistrationRes } from '../types';
-import { ApiBadRequestResponse, ApiBody, ApiResponse } from '@nestjs/swagger';
+import {ApiBadRequestResponse, ApiBody, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {
   invalidRegistrationResponse,
   validRegistrationResponse,
 } from './api-models/valid-registration-response';
 
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(
