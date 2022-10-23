@@ -22,6 +22,24 @@ async function bootstrap() {
     .setDescription('The pantries API description')
     .setVersion('1.0')
     .addTag('pantries')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        in: 'header',
+        bearerFormat: 'JWT',
+      },
+      'accessToken',
+    )
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        in: 'header',
+        bearerFormat: 'JWT',
+      },
+      'refreshToken',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
