@@ -5,4 +5,5 @@ export interface UserRegistrationReq {
 
 export interface UserRegistrationRes {
   message: string;
+  userId?: string;
 }

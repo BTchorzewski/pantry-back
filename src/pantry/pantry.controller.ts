@@ -26,7 +26,8 @@ import mock = jest.mock;
 import { DeletedItemResponse, GetItemResponse } from '../interfaces';
 import { UpdateItemDto } from '../item/dto/update-item.dto';
 import { UpdatePantryDto } from './dto/update-pantry.dto';
-import {ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from '@nestjs/swagger';
+import {CreatedPantryResponse, GetPatriesResponse} from './swagger-models/pantries';
 
 @ApiTags('Pantry and Items')
 @Controller('pantry')
@@ -36,21 +37,25 @@ export class PantryController {
     private itemService: ItemService,
   ) {}
 
+  @ApiBearerAuth('accessToken')
+  @ApiOkResponse({ type: GetPatriesResponse })
   @Get('/')
-  // @UseGuards(AccessJwtGuard)
+  @UseGuards(AccessJwtGuard)
   getPantries(
-    // @UserId() userId,
-    @MockedUserId() userId,
+    @UserId() userId,
+    // @MockedUserId() userId,
   ): Promise<FetchAllPantryResponse> {
     return this.pantryService.fetchAllPantries(userId);
   }
 
+  @ApiBearerAuth('accessToken')
+  @ApiCreatedResponse({ type: CreatedPantryResponse })
   @Post('/')
-  // @UseGuards(AccessJwtGuard)
+  @UseGuards(AccessJwtGuard)
   createPantry(
     @Body() { name }: CreatePantryDto,
-    // @UserId() userId,
-    @MockedUserId() userId,
+    @UserId() userId,
+    // @MockedUserId() userId,
   ): Promise<CreatePantryResponse> {
     return this.pantryService.createPantry(userId, name);
   }

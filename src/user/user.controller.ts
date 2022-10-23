@@ -11,7 +11,13 @@ import {
 import { UserRegistrationDto } from './dto/user-registration.dto';
 import { UserService } from './user.service';
 import { UserRegistrationRes } from '../types';
-import {ApiBadRequestResponse, ApiBody, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   invalidRegistrationResponse,
   validRegistrationResponse,
@@ -39,6 +45,7 @@ export class UserController {
     return this.userService.registerUser(email, password);
   }
 
+  @ApiParam({ name: 'userId' })
   @Get('/activation/:userId')
   accountActivation(@Param('userId', ParseUUIDPipe) id: string) {
     return this.userService.activateAccount(id);

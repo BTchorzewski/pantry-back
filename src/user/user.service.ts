@@ -42,6 +42,7 @@ export class UserService {
 
       return {
         message: 'succeed',
+        userId: newUser.id,
       };
     } catch (e) {
       if (e instanceof HttpException) throw e;

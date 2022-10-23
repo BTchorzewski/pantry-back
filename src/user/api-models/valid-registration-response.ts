@@ -7,6 +7,11 @@ export class validRegistrationResponse implements UserRegistrationRes {
     example: 'succeed',
   })
   message: string;
+  @ApiModelProperty({
+    title: 'userId',
+    example: '892cb9e3-372c-459b-80fb-d10b9976cbfe',
+  })
+  userId: string;
 }
 
 export class invalidRegistrationResponse implements UserRegistrationRes {
@@ -15,6 +20,7 @@ export class invalidRegistrationResponse implements UserRegistrationRes {
     example: 400,
   })
   statusCode: number;
+
 
   @ApiModelProperty({
     title: 'message',
