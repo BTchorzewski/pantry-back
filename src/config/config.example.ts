@@ -18,8 +18,8 @@ export const config = {
     host: 'localhost',
     port: 2525,
     auth: {
-      user: '',
-      password: '',
+      user: 'test@test.pl',
+      password: 'password',
     },
   },
 };
