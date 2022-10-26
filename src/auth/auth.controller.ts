@@ -34,7 +34,7 @@ import {
   UnauthorizedRespondSwagger,
   ValidLoginResSwagger,
   ValidLogoutRespondSwagger,
-} from './response-swagger/response';
+} from '../swagger/models/auth';
 
 @ApiTags('Authentication')
 @Controller('auth')

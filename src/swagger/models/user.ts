@@ -1,7 +1,7 @@
 import { UserRegistrationRes } from '../../types';
 import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 
-export class validRegistrationResponse implements UserRegistrationRes {
+export class user implements UserRegistrationRes {
   @ApiModelProperty({
     title: 'messages',
     example: 'succeed',

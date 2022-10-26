@@ -20,8 +20,8 @@ import {
 } from '@nestjs/swagger';
 import {
   invalidRegistrationResponse,
-  validRegistrationResponse,
-} from './api-models/valid-registration-response';
+  user,
+} from '../swagger/models/user';
 
 @ApiTags('User')
 @Controller('user')
@@ -33,7 +33,7 @@ export class UserController {
   @ApiBody({ type: UserRegistrationDto })
   @ApiResponse({
     status: 201,
-    type: validRegistrationResponse,
+    type: user,
   })
   @ApiBadRequestResponse({
     type: invalidRegistrationResponse,
