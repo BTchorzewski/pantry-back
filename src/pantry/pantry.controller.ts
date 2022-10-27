@@ -36,7 +36,9 @@ import {
 } from '@nestjs/swagger';
 import {
   CreatedPantryResponse,
-  GetPatriesResponse,
+  InvalidUpdatePantryRespond,
+  GetPantriesResponse,
+  ValidUpdatePantryRespond,
 } from '../swagger/models/pantry';
 
 @ApiTags('Pantry and Items')
@@ -48,9 +50,9 @@ export class PantryController {
   ) {}
 
   @ApiBearerAuth('accessToken')
-  @ApiOkResponse({ type: GetPatriesResponse })
-  @Get('/')
+  @ApiOkResponse({ type: GetPantriesResponse })
   @UseGuards(AccessJwtGuard)
+  @Get('/')
   getPantries(
     @UserId() userId,
     // @MockedUserId() userId,
@@ -72,7 +74,8 @@ export class PantryController {
 
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
-  @ApiBadRequestResponse({ description: 'The pantry was not found.' })
+  @ApiOkResponse({ type: ValidUpdatePantryRespond })
+  @ApiBadRequestResponse({ type: InvalidUpdatePantryRespond })
   @Put('/:pantryId')
   @UseGuards(AccessJwtGuard)
   updatePantry(

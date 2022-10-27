@@ -11,7 +11,7 @@ import {
 import { hash, compare } from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { UserEntity } from '../user/entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { TokensRes } from '../interfaces';
 import { config } from '../config/config';
 @Injectable()

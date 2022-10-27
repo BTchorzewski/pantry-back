@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserEntity } from '../user/entities/user.entity';
+import { UserEntity } from '../entities/user.entity';
 import { PantryEntity } from '../entities/pantry.entity';
 import {
   CreatePantryResponse,
