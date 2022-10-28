@@ -31,10 +31,10 @@ import {
 import { LoginDto } from './dto/login.dto';
 import {
   InvalidEmailResSwagger,
-  UnauthorizedRespondSwagger,
   ValidLoginResSwagger,
   ValidLogoutRespondSwagger,
 } from '../swagger/models/auth';
+import { UnauthorizedRespondSwagger } from '../swagger/models/general';
 
 @ApiTags('Authentication')
 @Controller('auth')
