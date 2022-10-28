@@ -1,4 +1,4 @@
-import { FetchAllPantryResponse } from '../../interfaces';
+import { DeletePantryResponse, FetchAllPantryResponse } from '../../interfaces';
 import { PantryEntity } from '../../entities/pantry.entity';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 
@@ -35,7 +35,7 @@ export class PantryModel {
   items: ItemModel[];
 }
 
-export class GetPantriesResponse {
+export class ApiOkPantryResponse {
   @ApiProperty({
     name: 'message',
     example: 'Succeed',
@@ -48,21 +48,14 @@ export class GetPantriesResponse {
   data: PantryModel[];
 }
 
-export class CreatedPantryResponse {
+export class ApiCreatePantryResponse {
   @ApiProperty({ example: 'dbf19a29-a780-4e95-b54b-4b7ea9169b42' })
   pantryId: string;
   @ApiProperty({ example: 'The pantry has been created.' })
   message: string;
 }
 
-export class OKGetPantriesResponse {
-  @ApiProperty({ example: 'Succeed' })
-  messages: string;
-  @ApiProperty({ type: () => PantryEntity })
-  data: PantryEntity[];
-}
-
-export class ValidUpdatePantryRespond {
+export class ApiOkUpdatePantryRespond {
   @ApiProperty()
   message: string;
   @ApiModelProperty({
@@ -72,7 +65,7 @@ export class ValidUpdatePantryRespond {
   data: PantryModel;
 }
 
-export class InvalidUpdatePantryRespond {
+export class ApiBadRequestUpdatePantryRespond {
   @ApiProperty({
     example: 400,
   })
@@ -81,4 +74,26 @@ export class InvalidUpdatePantryRespond {
     example: 'The pantry was not found.',
   })
   message: string;
+}
+
+export class ApiOkDeletePantryResponse implements DeletePantryResponse {
+  @ApiProperty({
+    name: 'message',
+    example: 'The pantry has been deleted.'
+  })
+  message: string;
+}
+
+export class ApiBadRequestDeletePantryRespond implements ApiBadRequestUpdatePantryRespond {
+  @ApiProperty({
+    name: 'statusCode',
+    example: 400,
+  })
+  statusCode: number;
+  @ApiProperty({
+    name: 'message',
+    example: 'The pantry was not found.',
+  })
+  message: string;
+
 }

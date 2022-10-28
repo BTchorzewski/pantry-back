@@ -13,18 +13,3 @@ export class user implements UserRegistrationRes {
   })
   userId: string;
 }
-
-export class invalidRegistrationResponse implements UserRegistrationRes {
-  @ApiModelProperty({
-    title: 'statusCode',
-    example: 400,
-  })
-  statusCode: number;
-
-
-  @ApiModelProperty({
-    title: 'message',
-    example: 'Bad Request',
-  })
-  message: string;
-}

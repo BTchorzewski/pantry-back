@@ -98,7 +98,7 @@ export class PantryService {
     await pantry.remove();
 
     return {
-      message: 'Succeed',
+      message: 'The pantry has been deleted.',
     };
   }
 }

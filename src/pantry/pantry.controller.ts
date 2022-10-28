@@ -35,10 +35,12 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
-  CreatedPantryResponse,
-  InvalidUpdatePantryRespond,
-  GetPantriesResponse,
-  ValidUpdatePantryRespond,
+  ApiCreatePantryResponse,
+  ApiBadRequestUpdatePantryRespond,
+  ApiOkPantryResponse,
+  ApiOkUpdatePantryRespond,
+  ApiOkDeletePantryResponse,
+  ApiBadRequestDeletePantryRespond,
 } from '../swagger/models/pantry';
 
 @ApiTags('Pantry and Items')
@@ -50,7 +52,7 @@ export class PantryController {
   ) {}
 
   @ApiBearerAuth('accessToken')
-  @ApiOkResponse({ type: GetPantriesResponse })
+  @ApiOkResponse({ type: ApiOkPantryResponse })
   @UseGuards(AccessJwtGuard)
   @Get('/')
   getPantries(
@@ -61,7 +63,7 @@ export class PantryController {
   }
 
   @ApiBearerAuth('accessToken')
-  @ApiCreatedResponse({ type: CreatedPantryResponse })
+  @ApiCreatedResponse({ type: ApiCreatePantryResponse })
   @Post('/')
   @UseGuards(AccessJwtGuard)
   createPantry(
@@ -74,8 +76,8 @@ export class PantryController {
 
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
-  @ApiOkResponse({ type: ValidUpdatePantryRespond })
-  @ApiBadRequestResponse({ type: InvalidUpdatePantryRespond })
+  @ApiOkResponse({ type: ApiOkUpdatePantryRespond })
+  @ApiBadRequestResponse({ type: ApiBadRequestUpdatePantryRespond })
   @Put('/:pantryId')
   @UseGuards(AccessJwtGuard)
   updatePantry(
@@ -89,7 +91,8 @@ export class PantryController {
 
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
-  @ApiBadRequestResponse({ description: 'The pantry was not found.' })
+  @ApiOkResponse({ type: ApiOkDeletePantryResponse })
+  @ApiBadRequestResponse({ type: ApiBadRequestDeletePantryRespond })
   @Delete('/:pantryId')
   @UseGuards(AccessJwtGuard)
   deletePantry(

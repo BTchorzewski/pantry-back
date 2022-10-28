@@ -19,9 +19,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
-  invalidRegistrationResponse,
   user,
 } from '../swagger/models/user';
+import { ApiBadRequestResponse } from '../swagger/models/general';
 
 @ApiTags('User')
 @Controller('user')
@@ -36,7 +36,7 @@ export class UserController {
     type: user,
   })
   @ApiBadRequestResponse({
-    type: invalidRegistrationResponse,
+    type: ApiBadRequestResponse,
   })
   @Post('/registration')
   userRegistration(

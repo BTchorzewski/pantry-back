@@ -34,7 +34,7 @@ import {
   ValidLoginResSwagger,
   ValidLogoutRespondSwagger,
 } from '../swagger/models/auth';
-import { UnauthorizedRespondSwagger } from '../swagger/models/general';
+import { ApiUnauthorizedRespondSwagger } from '../swagger/models/general';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -44,7 +44,7 @@ export class AuthController {
   ) {}
 
   @ApiOkResponse({ type: ValidLoginResSwagger })
-  @ApiUnauthorizedResponse({ type: UnauthorizedRespondSwagger })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiBadRequestResponse({ type: InvalidEmailResSwagger })
   @ApiBody({ type: LoginDto })
   @UseGuards(LocalAuthGuard)
@@ -54,7 +54,7 @@ export class AuthController {
   }
 
   @ApiBearerAuth('accessToken')
-  @ApiUnauthorizedResponse({ type: UnauthorizedRespondSwagger })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiOkResponse({ type: ValidLogoutRespondSwagger })
   @Get('/logout')
   @UseGuards(AccessJwtGuard)
@@ -64,7 +64,7 @@ export class AuthController {
 
   @ApiBearerAuth('refreshToken')
   @ApiOkResponse({ type: ValidLoginResSwagger })
-  @ApiUnauthorizedResponse({ type: UnauthorizedRespondSwagger })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @Get('/refresh-token')
   @UseGuards(RefreshJwtGuard)
   refreshToken(@UserId() id, @RefreshToken() token): Promise<TokensRes> {
