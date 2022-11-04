@@ -15,6 +15,18 @@ export class ItemModel {
     example: '13aac193-640e-4f4d-b4d3-6b83d11e5e15',
   })
   name: string;
+  @ApiProperty({
+    name: 'createdAt',
+    example: '2022-09-11T12:18:51.072Z',
+    type: Date,
+  })
+  createdAt: Date;
+  @ApiProperty({
+    name: 'expiration',
+    example: '2022-10-09T12:18:51.072Z',
+    type: Date,
+  })
+  expiration: '2990-10-01T00:00:00.000Z';
 }
 
 export class PantryModel {
@@ -25,12 +37,12 @@ export class PantryModel {
   id: string;
   @ApiProperty({
     name: 'name',
-    example: 'haha',
+    example: 'the fridge at the attic.',
   })
   name: string;
   @ApiModelProperty({
-    name: 'id',
-    type: ItemModel,
+    name: 'items',
+    type: [ItemModel],
   })
   items: ItemModel[];
 }
@@ -43,7 +55,7 @@ export class ApiOkPantryResponse {
   message: string;
   @ApiProperty({
     name: 'data',
-    type: PantryModel,
+    type: [PantryModel],
   })
   data: PantryModel[];
 }
@@ -79,12 +91,14 @@ export class ApiBadRequestUpdatePantryRespond {
 export class ApiOkDeletePantryResponse implements DeletePantryResponse {
   @ApiProperty({
     name: 'message',
-    example: 'The pantry has been deleted.'
+    example: 'The pantry has been deleted.',
   })
   message: string;
 }
 
-export class ApiBadRequestDeletePantryRespond implements ApiBadRequestUpdatePantryRespond {
+export class ApiBadRequestDeletePantryRespond
+  implements ApiBadRequestUpdatePantryRespond
+{
   @ApiProperty({
     name: 'statusCode',
     example: 400,
@@ -95,5 +109,4 @@ export class ApiBadRequestDeletePantryRespond implements ApiBadRequestUpdatePant
     example: 'The pantry was not found.',
   })
   message: string;
-
 }

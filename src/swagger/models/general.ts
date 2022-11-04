@@ -9,7 +9,7 @@ export class ApiUnauthorizedRespondSwagger {
   message: string;
 }
 
-export class ApiBadRequestResponse implements UserRegistrationRes {
+export class SwaggerBadRequestResponse implements UserRegistrationRes {
   @ApiProperty({
     title: 'statusCode',
     example: 400,
@@ -23,15 +23,15 @@ export class ApiBadRequestResponse implements UserRegistrationRes {
   message: string;
 }
 
-export class ApiInternalServerError implements ApiBadRequestResponse{
+export class ApiInternalServerError implements SwaggerBadRequestResponse {
   @ApiProperty({
     name: 'statusCode',
     example: 500,
   })
   statusCode: number;
   @ApiProperty({
-
+    name: 'message',
+    example: 'Serwer not working.',
   })
   message: string;
-
 }
