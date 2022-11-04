@@ -49,7 +49,7 @@ export class AuthController {
   @ApiBody({ type: LoginDto })
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  login(@UserObj() user): Promise<any> {
+  login(@UserObj() user): Promise<TokensRes> {
     return this.authService.login(user);
   }
 
