@@ -1,23 +1,50 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserEntity } from '../entities/user.entity';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { UserEntity } from '../user/entities/user.entity';
 import { PantryEntity } from '../entities/pantry.entity';
 import {
   CreatePantryResponse,
   DeletePantryResponse,
-  FetchAllPantryResponse,
+  FetchShortPantriesResponse,
+  ShortPantry,
   UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
 import { ItemEntity } from '../entities/item.entity';
-
+import { ItemService } from '../item/item.service';
 @Injectable()
 export class PantryService {
-  async fetchAllPantries(userId: string): Promise<FetchAllPantryResponse> {
-    const pantries = await PantryEntity.findBy({
+  constructor(
+    @Inject(forwardRef(() => ItemService)) private itemService: ItemService,
+  ) {}
+
+  async fetchShortPantries(
+    userId: string,
+  ): Promise<FetchShortPantriesResponse> {
+    const results = await PantryEntity.findBy({
       user: {
         id: userId,
       },
     });
-
+    const total = await this.itemService.countTotalItemsInPantry(results[0].id);
+    const pantries = await results.map(async (pantry) => {
+      const total = await this.itemService.countTotalItemsInPantry(pantry.id);
+      return {
+        id: pantry.id,
+        name: pantry.name,
+        stats: {
+          total,
+          fresh: 0,
+          expiredSoon: 0,
+        },
+      } as ShortPantry;
+    });
+    console.log(pantries[0]);
+    // @ts-ignore
     return { message: 'Succeed', data: pantries };
   }
 
@@ -98,7 +125,7 @@ export class PantryService {
     await pantry.remove();
 
     return {
-      message: 'The pantry has been deleted.',
+      message: 'Succeed',
     };
   }
 }

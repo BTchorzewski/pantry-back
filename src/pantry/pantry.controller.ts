@@ -14,7 +14,7 @@ import { CreatePantryDto } from './dto/create-pantry.dto';
 import {
   CreatePantryResponse,
   DeletePantryResponse,
-  FetchAllPantryResponse,
+  FetchShortPantriesResponse,
   UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
 import { ItemService } from '../item/item.service';
@@ -54,8 +54,8 @@ export class PantryController {
   getPantries(
     // @UserId() userId,
     @MockedUserId() userId,
-  ): Promise<FetchAllPantryResponse> {
-    return this.pantryService.fetchAllPantries(userId);
+  ): Promise<FetchShortPantriesResponse> {
+    return this.pantryService.fetchShortPantries(userId);
   }
 
   @ApiBearerAuth('accessToken')
