@@ -12,6 +12,7 @@ import {
   UpdatePantryResponse,
 } from '../interfaces';
 import * as moment from 'moment';
+import {MoreThanOrEqual, Raw} from 'typeorm';
 @Injectable()
 export class ItemService {
   async create(
@@ -113,5 +114,15 @@ export class ItemService {
     return {
       message: 'The item has been deleted.',
     };
+  }
+  async countTotalItemsInPantry(pantryId: string): Promise<number> {
+    return await ItemEntity.countBy({ pantry: { id: pantryId } });
+  }
+
+  async countFreshItemsInPantry(pantryId: string): Promise<number | null> {
+    return await ItemEntity.countBy({
+      pantry: { id: pantryId },
+      expiration: Raw((expiration) => `${expiration} > NOW()`),
+    });
   }
 }
