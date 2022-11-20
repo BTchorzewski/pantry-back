@@ -35,12 +35,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import {
-  ApiCreatePantryResponse,
-  ApiBadRequestUpdatePantryRespond,
-  ApiOkPantryResponse,
-  ApiOkUpdatePantryRespond,
-  ApiOkDeletePantryResponse,
-  ApiBadRequestDeletePantryRespond,
+  CreatedPantryResponse,
+  GetPatriesResponse,
 } from '../swagger/models/pantry';
 
 @ApiTags('Pantry and Items')
@@ -52,53 +48,51 @@ export class PantryController {
   ) {}
 
   @ApiBearerAuth('accessToken')
-  @ApiOkResponse({ type: ApiOkPantryResponse })
-  @UseGuards(AccessJwtGuard)
+  @ApiOkResponse({ type: GetPatriesResponse })
   @Get('/')
+  // @UseGuards(AccessJwtGuard)
   getPantries(
-    @UserId() userId,
-    // @MockedUserId() userId,
+    // @UserId() userId,
+    @MockedUserId() userId,
   ): Promise<FetchAllPantryResponse> {
     return this.pantryService.fetchAllPantries(userId);
   }
 
   @ApiBearerAuth('accessToken')
-  @ApiCreatedResponse({ type: ApiCreatePantryResponse })
+  @ApiCreatedResponse({ type: CreatedPantryResponse })
   @Post('/')
-  @UseGuards(AccessJwtGuard)
+  // @UseGuards(AccessJwtGuard)
   createPantry(
     @Body() { name }: CreatePantryDto,
-    @UserId() userId,
-    // @MockedUserId() userId,
+    // @UserId() userId,
+    @MockedUserId() userId,
   ): Promise<CreatePantryResponse> {
     return this.pantryService.createPantry(userId, name);
   }
 
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
-  @ApiOkResponse({ type: ApiOkUpdatePantryRespond })
-  @ApiBadRequestResponse({ type: ApiBadRequestUpdatePantryRespond })
+  @ApiBadRequestResponse({ description: 'The pantry was not found.' })
   @Put('/:pantryId')
-  @UseGuards(AccessJwtGuard)
+  // @UseGuards(AccessJwtGuard)
   updatePantry(
     @Body() { name }: UpdatePantryDto,
-    @UserId() userId,
+    // @UserId() userId,
     @Param('pantryId') pantryId,
-    // @MockedUserId() userId,
+    @MockedUserId() userId,
   ): Promise<UpdatePantryResponse> {
     return this.pantryService.updatePantry(userId, pantryId, name);
   }
 
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
-  @ApiOkResponse({ type: ApiOkDeletePantryResponse })
-  @ApiBadRequestResponse({ type: ApiBadRequestDeletePantryRespond })
+  @ApiBadRequestResponse({ description: 'The pantry was not found.' })
   @Delete('/:pantryId')
-  @UseGuards(AccessJwtGuard)
+  // @UseGuards(AccessJwtGuard)
   deletePantry(
-    @UserId() userId,
+    // @UserId() userId,
     @Param('pantryId', ParseUUIDPipe) pantryId,
-    // @MockedUserId() userId,
+    @MockedUserId() userId,
   ): Promise<DeletePantryResponse> {
     return this.pantryService.deletePantry(userId, pantryId);
   }
@@ -106,11 +100,11 @@ export class PantryController {
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'itemId' })
   @Get('/item/:itemId')
-  @UseGuards(AccessJwtGuard)
+  // @UseGuards(AccessJwtGuard)
   getItemById(
     @Param('itemId', ParseUUIDPipe) itemId,
-    @UserId() userId,
-    // @MockedUserId() userId,
+    // @UserId() userId,
+    @MockedUserId() userId,
   ): Promise<GetItemResponse> {
     return this.itemService.findOne(itemId, userId);
   }
