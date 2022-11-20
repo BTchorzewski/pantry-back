@@ -30,21 +30,20 @@ export class PantryService {
         id: userId,
       },
     });
-    const total = await this.itemService.countTotalItemsInPantry(results[0].id);
-    const pantries = await results.map(async (pantry) => {
-      const total = await this.itemService.countTotalItemsInPantry(pantry.id);
-      return {
-        id: pantry.id,
-        name: pantry.name,
-        stats: {
-          total,
-          fresh: 0,
-          expiredSoon: 0,
-        },
-      } as ShortPantry;
-    });
-    console.log(pantries[0]);
-    // @ts-ignore
+    const pantries = await Promise.all(
+      results.map(async (pantry) => {
+        return {
+          id: pantry.id,
+          name: pantry.name,
+          stats: {
+            total: await this.itemService.countTotalItemsInPantry(pantry.id),
+            fresh: 0,
+            expiredSoon: 0,
+          },
+        } as ShortPantry;
+      }),
+    );
+
     return { message: 'Succeed', data: pantries };
   }
 
