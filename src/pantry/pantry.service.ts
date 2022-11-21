@@ -36,11 +36,7 @@ export class PantryService {
         return {
           id: pantry.id,
           name: pantry.name,
-          stats: {
-            total: await this.itemService.countTotalItemsInPantry(pantry.id),
-            fresh: 0,
-            expiredSoon: 0,
-          },
+          stats: await this.itemService.createStats(pantry.id),
         } as ShortPantry;
       }),
     );

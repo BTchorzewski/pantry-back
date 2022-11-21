@@ -8,11 +8,12 @@ import {
   CreatedItemResponse,
   DeletedItemResponse,
   GetItemResponse,
+  Stats,
   UpdateItemResponse,
   UpdatePantryResponse,
 } from '../interfaces';
 import * as moment from 'moment';
-import {MoreThanOrEqual, Raw} from 'typeorm';
+import { Raw } from 'typeorm';
 @Injectable()
 export class ItemService {
   async create(
@@ -119,10 +120,32 @@ export class ItemService {
     return await ItemEntity.countBy({ pantry: { id: pantryId } });
   }
 
-  async countFreshItemsInPantry(pantryId: string): Promise<number | null> {
+  async countFreshItemsInPantry(pantryId: string): Promise<number> {
     return await ItemEntity.countBy({
       pantry: { id: pantryId },
-      expiration: Raw((expiration) => `${expiration} > NOW()`),
+      expiration: Raw((expiration) => `DATEDIFF(${expiration}, NOW()) > 7`),
     });
+  }
+  async countExpiredSoonItemsInPantry(pantryId: string): Promise<number> {
+    return await ItemEntity.countBy({
+      pantry: { id: pantryId },
+      expiration: Raw(
+        (expiration) => `DATEDIFF(${expiration}, NOW()) BETWEEN 1 AND 4`,
+      ),
+    });
+  }
+  async countExpiredItemsInPantry(pantryId: string): Promise<number> {
+    return await ItemEntity.countBy({
+      pantry: { id: pantryId },
+      expiration: Raw((expiration) => `DATEDIFF(${expiration}, NOW()) < 1`),
+    });
+  }
+  async createStats(pantryId: string): Promise<Stats> {
+    return {
+      total: await this.countTotalItemsInPantry(pantryId),
+      fresh: await this.countFreshItemsInPantry(pantryId),
+      expiredSoon: await this.countExpiredSoonItemsInPantry(pantryId),
+      expired: await this.countExpiredItemsInPantry(pantryId),
+    };
   }
 }

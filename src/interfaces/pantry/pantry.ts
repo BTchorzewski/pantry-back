@@ -5,14 +5,17 @@ export interface CreatePantryResponse {
   pantryId?: string;
 }
 
+export interface Stats {
+  fresh: number;
+  expiredSoon: number;
+  total: number;
+  expired: number;
+}
+
 export interface ShortPantry {
   id: string;
   name: string;
-  stats: {
-    fresh: number;
-    expiredSoon: number;
-    total: number;
-  };
+  stats: Stats;
 }
 
 export interface FetchShortPantriesResponse {
