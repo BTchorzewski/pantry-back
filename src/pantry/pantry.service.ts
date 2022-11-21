@@ -5,7 +5,7 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common';
-import { UserEntity } from '../user/entities/user.entity';
+
 import { PantryEntity } from '../entities/pantry.entity';
 import {
   CreatePantryResponse,
@@ -16,6 +16,7 @@ import {
 } from '../interfaces/pantry/pantry';
 import { ItemEntity } from '../entities/item.entity';
 import { ItemService } from '../item/item.service';
+import { UserEntity } from '../entities/user.entity';
 @Injectable()
 export class PantryService {
   constructor(
