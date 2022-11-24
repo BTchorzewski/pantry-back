@@ -38,6 +38,7 @@ import {
   CreatedPantryResponse,
   GetPantriesResponse,
 } from '../swagger/models/pantry';
+import { SwaggerBadRequestResponse } from '../swagger/models/general';
 
 @ApiTags('Pantry and Items')
 @Controller('pantry')
@@ -49,6 +50,7 @@ export class PantryController {
 
   @ApiBearerAuth('accessToken')
   @ApiOkResponse({ type: GetPantriesResponse })
+  @ApiBadRequestResponse({ type: SwaggerBadRequestResponse })
   @Get('/')
   // @UseGuards(AccessJwtGuard)
   getPantries(

@@ -31,6 +31,8 @@ export class PantryService {
         id: userId,
       },
     });
+
+
     const pantries = await Promise.all(
       results.map(async (pantry) => {
         return {
