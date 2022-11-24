@@ -2,7 +2,7 @@ import { FetchShortPantriesResponse, ShortPantry } from '../../interfaces';
 import { PantryEntity } from '../../entities/pantry.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetPatriesResponse implements FetchShortPantriesResponse {
+export class GetPantriesResponse implements FetchShortPantriesResponse {
   @ApiProperty()
   data: ShortPantry[];
   @ApiProperty()

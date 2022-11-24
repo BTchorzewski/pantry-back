@@ -36,7 +36,7 @@ import {
 } from '@nestjs/swagger';
 import {
   CreatedPantryResponse,
-  GetPatriesResponse,
+  GetPantriesResponse,
 } from '../swagger/models/pantry';
 
 @ApiTags('Pantry and Items')
@@ -48,7 +48,7 @@ export class PantryController {
   ) {}
 
   @ApiBearerAuth('accessToken')
-  @ApiOkResponse({ type: GetPatriesResponse })
+  @ApiOkResponse({ type: GetPantriesResponse })
   @Get('/')
   // @UseGuards(AccessJwtGuard)
   getPantries(
