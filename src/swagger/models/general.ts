@@ -31,7 +31,7 @@ export class ApiInternalServerError implements SwaggerBadRequestResponse {
   statusCode: number;
   @ApiProperty({
     name: 'message',
-    example: 'Serwer not working.',
+    example: 'Server not working.',
   })
   message: string;
 }
