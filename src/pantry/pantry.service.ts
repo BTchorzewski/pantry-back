@@ -10,6 +10,7 @@ import { PantryEntity } from '../entities/pantry.entity';
 import {
   CreatePantryResponse,
   DeletePantryResponse,
+  FetchPantryByIdResponse,
   FetchShortPantriesResponse,
   ShortPantry,
   UpdatePantryResponse,
@@ -43,6 +44,27 @@ export class PantryService {
     );
 
     return { message: 'Succeed', data: pantries };
+  }
+
+  async fetchCompletePantryById(
+    userId: string,
+    pantryId: string,
+  ): Promise<FetchPantryByIdResponse> {
+    const data = await PantryEntity.findOneBy({
+      id: pantryId,
+      user: {
+        id: userId,
+      },
+    });
+
+    console.log(data);
+    if (data === null)
+      throw new HttpException('The pantry not found', HttpStatus.NOT_FOUND);
+
+    return {
+      message: 'Succeed',
+      data,
+    };
   }
 
   async createPantry(

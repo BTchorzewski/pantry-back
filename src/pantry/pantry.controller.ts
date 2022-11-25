@@ -13,9 +13,9 @@ import { PantryService } from './pantry.service';
 import { CreatePantryDto } from './dto/create-pantry.dto';
 import {
   CreatePantryResponse,
-  DeletePantryResponse,
+  DeletePantryResponse, FetchPantryByIdResponse,
   FetchShortPantriesResponse,
-  UpdatePantryResponse,
+  UpdatePantryResponse
 } from '../interfaces/pantry/pantry';
 import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -34,16 +34,16 @@ import {
   ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
-  ApiInternalServerErrorResponse
+  ApiInternalServerErrorResponse, ApiNotFoundResponse
 } from '@nestjs/swagger';
 import {
-  CreatedPantryResponse,
-  FetchPantriesResponse,
+  CreatedPantryResponse, FetchCompletePantryByIResponse,
+  FetchPantriesResponse
 } from '../swagger/models/pantry';
 import {
-  ApiInternalServerErrorSwagger,
+  ApiInternalServerErrorSwagger, ApiNotFoundResponseSwagger,
   ApiUnauthorizedRespondSwagger,
-  BadRequestResponseSwagger,
+  BadRequestResponseSwagger
 } from '../swagger/models/general';
 
 @ApiTags('Pantry and Items')
@@ -67,9 +67,27 @@ export class PantryController {
   ): Promise<FetchShortPantriesResponse> {
     return this.pantryService.fetchShortPantries(userId);
   }
+
+  @Get('/:pantryId')
+  @ApiParam({ name: 'pantryId' })
+  // @ApiBearerAuth('accessToken')
+  @ApiOkResponse({ type: FetchCompletePantryByIResponse })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
+  // @UseGuards(AccessJwtGuard)
+  fetchPantryById(
+    // @UserId() userId,
+    @Param('pantryId') pantryId,
+    @MockedUserId() userId,
+  ): Promise<FetchPantryByIdResponse> {
+    return this.pantryService.fetchCompletePantryById(userId, pantryId);
+  }
+
   @ApiBearerAuth('accessToken')
   @ApiCreatedResponse({ type: CreatedPantryResponse })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   @Post('/')
   // @UseGuards(AccessJwtGuard)
   createPantry(
@@ -82,8 +100,10 @@ export class PantryController {
 
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
-  @ApiBadRequestResponse({ description: 'The pantry was not found.' })
+  @ApiOkResponse({ type: FetchCompletePantryByIResponse })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   @Put('/:pantryId')
   // @UseGuards(AccessJwtGuard)
   updatePantry(
@@ -94,11 +114,12 @@ export class PantryController {
   ): Promise<UpdatePantryResponse> {
     return this.pantryService.updatePantry(userId, pantryId, name);
   }
-
+  //@todo has to finishe this controller.
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
-  @ApiBadRequestResponse({ description: 'The pantry was not found.' })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   @Delete('/:pantryId')
   // @UseGuards(AccessJwtGuard)
   deletePantry(

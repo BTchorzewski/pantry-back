@@ -23,7 +23,8 @@ export class BadRequestResponseSwagger implements UserRegistrationRes {
   message: string;
 }
 
-export class ApiInternalServerErrorSwagger implements BadRequestResponseSwagger
+export class ApiInternalServerErrorSwagger
+  implements BadRequestResponseSwagger
 {
   @ApiProperty({
     name: 'statusCode',
@@ -34,5 +35,12 @@ export class ApiInternalServerErrorSwagger implements BadRequestResponseSwagger
     name: 'message',
     example: 'Server not working.',
   })
+  message: string;
+}
+
+export class ApiNotFoundResponseSwagger {
+  @ApiProperty({ name: 'statusCode', example: 404 })
+  statusCode: number;
+  @ApiProperty({ name: 'message', example: 'The pantry not found' })
   message: string;
 }

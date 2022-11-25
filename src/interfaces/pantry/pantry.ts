@@ -31,3 +31,8 @@ export interface UpdatePantryResponse {
 export interface DeletePantryResponse {
   message: string;
 }
+
+export interface FetchPantryByIdResponse {
+  message: string;
+  data: PantryEntity;
+}
