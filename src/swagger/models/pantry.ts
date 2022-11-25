@@ -27,7 +27,7 @@ export class BasicPantry {
   stats: StatsPantry;
 }
 
-export class GetPantriesResponse {
+export class FetchPantriesResponse {
   @ApiProperty({ type: [BasicPantry] })
   data: BasicPantry[];
   @ApiProperty({ example: 'Succeed' })

@@ -32,7 +32,6 @@ export class PantryService {
       },
     });
 
-
     const pantries = await Promise.all(
       results.map(async (pantry) => {
         return {

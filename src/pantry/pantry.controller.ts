@@ -33,12 +33,18 @@ import {
   ApiOkResponse,
   ApiParam,
   ApiTags,
+  ApiUnauthorizedResponse,
+  ApiInternalServerErrorResponse
 } from '@nestjs/swagger';
 import {
   CreatedPantryResponse,
-  GetPantriesResponse,
+  FetchPantriesResponse,
 } from '../swagger/models/pantry';
-import { SwaggerBadRequestResponse } from '../swagger/models/general';
+import {
+  ApiInternalServerErrorSwagger,
+  ApiUnauthorizedRespondSwagger,
+  BadRequestResponseSwagger,
+} from '../swagger/models/general';
 
 @ApiTags('Pantry and Items')
 @Controller('pantry')
@@ -49,19 +55,21 @@ export class PantryController {
   ) {}
 
   @ApiBearerAuth('accessToken')
-  @ApiOkResponse({ type: GetPantriesResponse })
-  @ApiBadRequestResponse({ type: SwaggerBadRequestResponse })
+  @ApiOkResponse({ type: FetchPantriesResponse })
+  @ApiBadRequestResponse({ type: BadRequestResponseSwagger })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   @Get('/')
   // @UseGuards(AccessJwtGuard)
-  getPantries(
+  fetchPantries(
     // @UserId() userId,
     @MockedUserId() userId,
   ): Promise<FetchShortPantriesResponse> {
     return this.pantryService.fetchShortPantries(userId);
   }
-
   @ApiBearerAuth('accessToken')
   @ApiCreatedResponse({ type: CreatedPantryResponse })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @Post('/')
   // @UseGuards(AccessJwtGuard)
   createPantry(
@@ -75,6 +83,7 @@ export class PantryController {
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
   @ApiBadRequestResponse({ description: 'The pantry was not found.' })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @Put('/:pantryId')
   // @UseGuards(AccessJwtGuard)
   updatePantry(
@@ -89,6 +98,7 @@ export class PantryController {
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
   @ApiBadRequestResponse({ description: 'The pantry was not found.' })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @Delete('/:pantryId')
   // @UseGuards(AccessJwtGuard)
   deletePantry(
@@ -101,6 +111,7 @@ export class PantryController {
 
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'itemId' })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @Get('/item/:itemId')
   // @UseGuards(AccessJwtGuard)
   getItemById(
@@ -113,6 +124,7 @@ export class PantryController {
 
   @Post('/:pantryId/item')
   // @UseGuards(AccessJwtGuard)
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   createItem(
     // @UserId() userId: string,
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
@@ -124,6 +136,7 @@ export class PantryController {
 
   @Put('/item/:itemId')
   // @UseGuards(AccessJwtGuard)
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   updateItem(
     // @UserId() userId: string,
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
@@ -136,6 +149,7 @@ export class PantryController {
 
   @Delete('/item/:itemId')
   // @UseGuards(AccessJwtGuard)
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   deleteItem(
     // @UserId() userId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
