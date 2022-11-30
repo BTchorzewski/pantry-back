@@ -124,7 +124,7 @@ export class PantryService {
     if (!user)
       throw new HttpException(
         'The user was not found.',
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.NOT_FOUND,
       );
     const pantry = await PantryEntity.findOneBy({
       id: pantryId,

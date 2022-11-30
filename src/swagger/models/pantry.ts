@@ -71,3 +71,11 @@ export class FetchCompletePantryByIResponse {
   @ApiProperty({ type: CompletePantryModel })
   data: CompletePantryModel;
 }
+
+export class DeletedPantryResponse {
+  @ApiProperty({
+    name: 'message',
+    example: 'Succeed',
+  })
+  message: string;
+}

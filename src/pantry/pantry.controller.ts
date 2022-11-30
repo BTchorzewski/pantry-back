@@ -37,7 +37,7 @@ import {
   ApiInternalServerErrorResponse, ApiNotFoundResponse
 } from '@nestjs/swagger';
 import {
-  CreatedPantryResponse, FetchCompletePantryByIResponse,
+  CreatedPantryResponse, DeletedPantryResponse, FetchCompletePantryByIResponse,
   FetchPantriesResponse
 } from '../swagger/models/pantry';
 import {
@@ -117,6 +117,7 @@ export class PantryController {
   //@todo has to finishe this controller.
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
+  @ApiOkResponse({ type: DeletedPantryResponse })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
