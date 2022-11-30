@@ -57,7 +57,6 @@ export class PantryService {
       },
     });
 
-    console.log(data);
     if (data === null)
       throw new HttpException('The pantry not found', HttpStatus.NOT_FOUND);
 
@@ -122,10 +121,7 @@ export class PantryService {
   ): Promise<DeletePantryResponse> {
     const user = await UserEntity.findOneBy({ id: userId });
     if (!user)
-      throw new HttpException(
-        'The user was not found.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException('The user was not found.', HttpStatus.NOT_FOUND);
     const pantry = await PantryEntity.findOneBy({
       id: pantryId,
       user: { id: userId },

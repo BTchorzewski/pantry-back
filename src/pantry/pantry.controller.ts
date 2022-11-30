@@ -13,9 +13,10 @@ import { PantryService } from './pantry.service';
 import { CreatePantryDto } from './dto/create-pantry.dto';
 import {
   CreatePantryResponse,
-  DeletePantryResponse, FetchPantryByIdResponse,
+  DeletePantryResponse,
+  FetchPantryByIdResponse,
   FetchShortPantriesResponse,
-  UpdatePantryResponse
+  UpdatePantryResponse,
 } from '../interfaces/pantry/pantry';
 import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -34,16 +35,20 @@ import {
   ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
-  ApiInternalServerErrorResponse, ApiNotFoundResponse
+  ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
 } from '@nestjs/swagger';
 import {
-  CreatedPantryResponse, DeletedPantryResponse, FetchCompletePantryByIResponse,
-  FetchPantriesResponse
+  CreatedPantryResponse,
+  DeletedPantryResponse,
+  FetchCompletePantryByIResponse,
+  FetchPantriesResponse,
 } from '../swagger/models/pantry';
 import {
-  ApiInternalServerErrorSwagger, ApiNotFoundResponseSwagger,
+  ApiInternalServerErrorSwagger,
+  ApiNotFoundResponseSwagger,
   ApiUnauthorizedRespondSwagger,
-  BadRequestResponseSwagger
+  BadRequestResponseSwagger,
 } from '../swagger/models/general';
 
 @ApiTags('Pantry and Items')
@@ -114,7 +119,6 @@ export class PantryController {
   ): Promise<UpdatePantryResponse> {
     return this.pantryService.updatePantry(userId, pantryId, name);
   }
-  //@todo has to finishe this controller.
   @ApiBearerAuth('accessToken')
   @ApiParam({ name: 'pantryId' })
   @ApiOkResponse({ type: DeletedPantryResponse })
@@ -156,17 +160,17 @@ export class PantryController {
     return this.itemService.create(item, userId, pantryId);
   }
 
+  // @todo add validation to expiration.
   @Put('/item/:itemId')
   // @UseGuards(AccessJwtGuard)
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   updateItem(
     // @UserId() userId: string,
-    @Param('pantryId', ParseUUIDPipe) pantryId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
     @Body() item: CreateItemDto,
     @MockedUserId() userId,
   ): Promise<any> {
-    return this.itemService.updateItem(item, userId, pantryId, itemId);
+    return this.itemService.updateItem(item, userId, itemId);
   }
 
   @Delete('/item/:itemId')

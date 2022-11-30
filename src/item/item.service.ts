@@ -82,7 +82,6 @@ export class ItemService {
   async updateItem(
     item: CreateItemDto,
     userId: string,
-    pantryId: string,
     itemId: string,
   ): Promise<UpdateItemResponse> {
     const fetchedItem = await ItemEntity.findOneBy({
