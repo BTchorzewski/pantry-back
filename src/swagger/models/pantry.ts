@@ -79,3 +79,12 @@ export class DeletedPantryResponse {
   })
   message: string;
 }
+
+export class GetItemByIdResponse {
+  @ApiProperty({ example: 'dbf19a29-a780-4e95-b54b-4b7ea9169b42' })
+  id: string;
+  @ApiProperty({ example: 'milk' })
+  name: string;
+  @ApiProperty({ example: '2022-11-23T19:11:41.000Z' })
+  expiration: Date;
+}

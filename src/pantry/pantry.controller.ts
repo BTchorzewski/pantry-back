@@ -42,7 +42,7 @@ import {
   CreatedPantryResponse,
   DeletedPantryResponse,
   FetchCompletePantryByIResponse,
-  FetchPantriesResponse,
+  FetchPantriesResponse, GetItemByIdResponse,
 } from '../swagger/models/pantry';
 import {
   ApiInternalServerErrorSwagger,
@@ -135,10 +135,11 @@ export class PantryController {
     return this.pantryService.deletePantry(userId, pantryId);
   }
 
-  @ApiBearerAuth('accessToken')
-  @ApiParam({ name: 'itemId' })
-  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @Get('/item/:itemId')
+  // @ApiBearerAuth('accessToken')
+  @ApiParam({ name: 'itemId' })
+  @ApiOkResponse({ type: GetItemByIdResponse })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   // @UseGuards(AccessJwtGuard)
   getItemById(
     @Param('itemId', ParseUUIDPipe) itemId,
@@ -150,6 +151,7 @@ export class PantryController {
 
   @Post('/:pantryId/item')
   // @UseGuards(AccessJwtGuard)
+  @ApiOkResponse({ type: GetItemByIdResponse })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   createItem(
     // @UserId() userId: string,
