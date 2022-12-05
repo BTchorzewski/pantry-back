@@ -91,6 +91,9 @@ export class ItemService {
       },
     });
 
+    if (!fetchedItem)
+      throw new HttpException('the item is not found.', HttpStatus.NOT_FOUND);
+
     fetchedItem.name = item.name;
     fetchedItem.expiration = item.expiration;
     await fetchedItem.save();
@@ -106,10 +109,13 @@ export class ItemService {
     itemId: string,
     userId: string,
   ): Promise<DeletedItemResponse> {
-    await ItemEntity.createQueryBuilder()
+    const results = await ItemEntity.createQueryBuilder()
       .where('id = :itemId AND userId = :userId', { itemId, userId })
       .delete()
       .execute();
+
+    if (!results.affected)
+      throw new HttpException('the item is not found.', HttpStatus.NOT_FOUND);
 
     return {
       message: 'The item has been deleted.',

@@ -42,7 +42,8 @@ import {
   CreatedPantryResponse,
   DeletedPantryResponse,
   FetchCompletePantryByIResponse,
-  FetchPantriesResponse, GetItemByIdResponse,
+  FetchPantriesResponse,
+  GetItemByIdResponse,
 } from '../swagger/models/pantry';
 import {
   ApiInternalServerErrorSwagger,
@@ -137,10 +138,12 @@ export class PantryController {
 
   @Get('/item/:itemId')
   // @ApiBearerAuth('accessToken')
+  // @UseGuards(AccessJwtGuard)
   @ApiParam({ name: 'itemId' })
   @ApiOkResponse({ type: GetItemByIdResponse })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
-  // @UseGuards(AccessJwtGuard)
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   getItemById(
     @Param('itemId', ParseUUIDPipe) itemId,
     // @UserId() userId,
@@ -150,9 +153,12 @@ export class PantryController {
   }
 
   @Post('/:pantryId/item')
+  // @ApiBearerAuth('accessToken')
   // @UseGuards(AccessJwtGuard)
   @ApiOkResponse({ type: GetItemByIdResponse })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   createItem(
     // @UserId() userId: string,
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
@@ -165,7 +171,10 @@ export class PantryController {
   // @todo add validation to expiration.
   @Put('/item/:itemId')
   // @UseGuards(AccessJwtGuard)
+  @ApiOkResponse({ type: GetItemByIdResponse })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   updateItem(
     // @UserId() userId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
@@ -178,6 +187,8 @@ export class PantryController {
   @Delete('/item/:itemId')
   // @UseGuards(AccessJwtGuard)
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   deleteItem(
     // @UserId() userId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
