@@ -168,7 +168,6 @@ export class PantryController {
     return this.itemService.create(item, userId, pantryId);
   }
 
-  // @todo add validation to expiration.
   @Put('/item/:itemId')
   // @UseGuards(AccessJwtGuard)
   @ApiOkResponse({ type: GetItemByIdResponse })
