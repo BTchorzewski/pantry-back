@@ -21,7 +21,6 @@ async function bootstrap() {
     .setTitle('Pantries API')
     .setDescription('The pantries API description')
     .setVersion('1.0')
-    .addTag('pantries')
     .addBearerAuth(
       {
         type: 'http',
