@@ -57,12 +57,12 @@ export class UserService {
     });
     if (user === null)
       return {
-        msg: 'invalid link',
+        message: 'invalid link',
       };
     user.isActivated = true;
     await user.save();
     return {
-      msg: 'account activated.',
+      message: 'account activated.',
     };
   }
   async findUserByEmail(email: string): Promise<UserEntity | null> {

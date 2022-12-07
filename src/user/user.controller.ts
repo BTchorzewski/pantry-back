@@ -14,11 +14,13 @@ import { UserRegistrationRes } from '../types';
 import {
   ApiBadRequestResponse,
   ApiBody,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
   ApiParam,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { user } from '../swagger/models/user';
+import { user, UserActivationResponse } from '../swagger/models/user';
 import { BadRequestResponseSwagger } from '../swagger/models/general';
 
 @ApiTags('User')
@@ -28,23 +30,24 @@ export class UserController {
     @Inject(forwardRef(() => UserService)) private userService: UserService,
   ) {}
 
+  @Post('/registration')
+  // swagger section
   @ApiBody({ type: UserRegistrationDto })
-  @ApiResponse({
-    status: 201,
-    type: user,
-  })
+  @ApiCreatedResponse({ type: user })
   @ApiBadRequestResponse({
     type: BadRequestResponseSwagger,
   })
-  @Post('/registration')
   userRegistration(
     @Body() { password, email }: UserRegistrationDto,
   ): Promise<UserRegistrationRes> {
     return this.userService.registerUser(email, password);
   }
 
-  @ApiParam({ name: 'userId' })
   @Get('/activation/:userId')
+  // swagger section
+  @ApiOkResponse({ type: UserActivationResponse })
+  @ApiNotFoundResponse({ type: UserActivationResponse })
+  @ApiParam({ name: 'userId' })
   accountActivation(@Param('userId', ParseUUIDPipe) id: string) {
     return this.userService.activateAccount(id);
   }
