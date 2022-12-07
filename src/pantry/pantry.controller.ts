@@ -22,10 +22,7 @@ import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UserId } from '../decorators/userId.decorator';
 import { AccessJwtGuard } from '../guards/access-jwt.guard';
-import { MockedUserId } from '../decorators/mockUserId.decorator';
-import mock = jest.mock;
 import { DeletedItemResponse, GetItemResponse } from '../interfaces';
-import { UpdateItemDto } from '../item/dto/update-item.dto';
 import { UpdatePantryDto } from './dto/update-pantry.dto';
 import {
   ApiBadRequestResponse,
@@ -37,6 +34,7 @@ import {
   ApiUnauthorizedResponse,
   ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
+  ApiOperation,
 } from '@nestjs/swagger';
 import {
   CreatedPantryResponse,
@@ -52,7 +50,7 @@ import {
   BadRequestResponseSwagger,
 } from '../swagger/models/general';
 
-@ApiTags('Pantry and Items')
+@ApiTags('CRUD for Pantries and Items')
 @Controller('pantry')
 export class PantryController {
   constructor(
@@ -60,138 +58,168 @@ export class PantryController {
     private itemService: ItemService,
   ) {}
 
+  @Get('/')
+  // Authentication section
   @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiOperation({ description: 'Fetch all pantries.' })
   @ApiOkResponse({ type: FetchPantriesResponse })
   @ApiBadRequestResponse({ type: BadRequestResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  @Get('/')
-  // @UseGuards(AccessJwtGuard)
   fetchPantries(
-    // @UserId() userId,
-    @MockedUserId() userId,
+    @UserId() userId,
+    // @MockedUserId() userId,
   ): Promise<FetchShortPantriesResponse> {
     return this.pantryService.fetchShortPantries(userId);
   }
 
   @Get('/:pantryId')
+  // Authentication section
+  @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
   @ApiParam({ name: 'pantryId' })
-  // @ApiBearerAuth('accessToken')
+  @ApiOperation({ description: 'Fetch a pantry by id.' })
   @ApiOkResponse({ type: FetchCompletePantryByIResponse })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  // @UseGuards(AccessJwtGuard)
   fetchPantryById(
-    // @UserId() userId,
+    @UserId() userId,
     @Param('pantryId') pantryId,
-    @MockedUserId() userId,
+    // @MockedUserId() userId,
   ): Promise<FetchPantryByIdResponse> {
     return this.pantryService.fetchCompletePantryById(userId, pantryId);
   }
 
+  @Post('/')
+  // Authentication section
   @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiOperation({ description: 'Create a pantry.' })
   @ApiCreatedResponse({ type: CreatedPantryResponse })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  @Post('/')
-  // @UseGuards(AccessJwtGuard)
   createPantry(
     @Body() { name }: CreatePantryDto,
-    // @UserId() userId,
-    @MockedUserId() userId,
+    @UserId() userId,
+    // @MockedUserId() userId,
   ): Promise<CreatePantryResponse> {
     return this.pantryService.createPantry(userId, name);
   }
 
+  @Put('/:pantryId')
+  // Authentication section
   @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
   @ApiParam({ name: 'pantryId' })
+  @ApiOperation({ description: 'Update a pantry.' })
   @ApiOkResponse({ type: FetchCompletePantryByIResponse })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  @Put('/:pantryId')
-  // @UseGuards(AccessJwtGuard)
   updatePantry(
     @Body() { name }: UpdatePantryDto,
-    // @UserId() userId,
+    @UserId() userId,
     @Param('pantryId') pantryId,
-    @MockedUserId() userId,
+    // @MockedUserId() userId,
   ): Promise<UpdatePantryResponse> {
     return this.pantryService.updatePantry(userId, pantryId, name);
   }
+
+  @Delete('/:pantryId')
+  // Authentication section
   @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiOperation({ description: 'Delete a pantry.' })
   @ApiParam({ name: 'pantryId' })
   @ApiOkResponse({ type: DeletedPantryResponse })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  @Delete('/:pantryId')
-  // @UseGuards(AccessJwtGuard)
   deletePantry(
-    // @UserId() userId,
     @Param('pantryId', ParseUUIDPipe) pantryId,
-    @MockedUserId() userId,
+    @UserId() userId,
+    // @MockedUserId() userId,
   ): Promise<DeletePantryResponse> {
     return this.pantryService.deletePantry(userId, pantryId);
   }
 
   @Get('/item/:itemId')
-  // @ApiBearerAuth('accessToken')
-  // @UseGuards(AccessJwtGuard)
+  // Authentication section
+  @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
   @ApiParam({ name: 'itemId' })
+  @ApiOperation({ description: 'Fetch an item by id.' })
   @ApiOkResponse({ type: GetItemByIdResponse })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   getItemById(
     @Param('itemId', ParseUUIDPipe) itemId,
-    // @UserId() userId,
-    @MockedUserId() userId,
+    @UserId() userId,
+    // @MockedUserId() userId,
   ): Promise<GetItemResponse> {
     return this.itemService.findOne(itemId, userId);
   }
 
   @Post('/:pantryId/item')
-  // @ApiBearerAuth('accessToken')
-  // @UseGuards(AccessJwtGuard)
+  // Authentication section
+  @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiOperation({ description: 'Create an item.' })
   @ApiOkResponse({ type: GetItemByIdResponse })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   createItem(
-    // @UserId() userId: string,
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
     @Body() item: CreateItemDto,
-    @MockedUserId() userId,
+    @UserId() userId: string,
+    // @MockedUserId() userId,
   ): Promise<any> {
     return this.itemService.create(item, userId, pantryId);
   }
 
   @Put('/item/:itemId')
-  // @UseGuards(AccessJwtGuard)
+  // Authentication section
+  @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiOperation({ description: 'Update an item by id.' })
   @ApiOkResponse({ type: GetItemByIdResponse })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   updateItem(
-    // @UserId() userId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
     @Body() item: CreateItemDto,
-    @MockedUserId() userId,
+    @UserId() userId: string,
+    // @MockedUserId() userId,
   ): Promise<any> {
     return this.itemService.updateItem(item, userId, itemId);
   }
 
   @Delete('/item/:itemId')
-  // @UseGuards(AccessJwtGuard)
+  // Authentication section
+  @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiOperation({ description: 'Delete an item by id.' })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   deleteItem(
-    // @UserId() userId: string,
     @Param('itemId', ParseUUIDPipe) itemId: string,
-    @MockedUserId() userId,
+    @UserId() userId: string,
+    // @MockedUserId() userId,
   ): Promise<DeletedItemResponse> {
     return this.itemService.deleteItemById(itemId, userId);
   }
