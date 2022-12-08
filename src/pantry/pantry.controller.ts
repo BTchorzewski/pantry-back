@@ -17,12 +17,12 @@ import {
   FetchPantryByIdResponse,
   FetchShortPantriesResponse,
   UpdatePantryResponse,
-} from '../interfaces/pantry/pantry';
+} from '../types';
 import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UserId } from '../decorators/userId.decorator';
 import { AccessJwtGuard } from '../guards/access-jwt.guard';
-import { DeletedItemResponse, GetItemResponse } from '../interfaces';
+import { DeletedItemResponse, GetItemResponse } from '../types';
 import { UpdatePantryDto } from './dto/update-pantry.dto';
 import {
   ApiBadRequestResponse,

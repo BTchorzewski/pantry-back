@@ -13,7 +13,7 @@ import { UserId } from '../decorators/userId.decorator';
 import { AccessJwtGuard } from '../guards/access-jwt.guard';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
 import { RefreshToken } from '../decorators/RefreshToken.decorator';
-import { TokensRes } from '../interfaces';
+import { TokensRes } from '../types';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,

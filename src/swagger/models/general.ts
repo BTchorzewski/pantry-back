@@ -1,4 +1,3 @@
-import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 import { UserRegistrationRes } from '../../types';
 import { ApiProperty } from '@nestjs/swagger';
 

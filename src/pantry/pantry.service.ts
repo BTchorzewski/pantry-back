@@ -14,7 +14,7 @@ import {
   FetchShortPantriesResponse,
   ShortPantry,
   UpdatePantryResponse,
-} from '../interfaces/pantry/pantry';
+} from '../types';
 import { ItemEntity } from '../entities/item.entity';
 import { ItemService } from '../item/item.service';
 import { UserEntity } from '../entities/user.entity';

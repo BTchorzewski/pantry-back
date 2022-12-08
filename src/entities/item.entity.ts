@@ -9,10 +9,7 @@ import {
 import { PantryEntity } from './pantry.entity';
 import { UserEntity } from './user.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  ApiModelProperty,
-  ApiModelPropertyOptional,
-} from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
+import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 
 @Entity()
 export class ItemEntity extends BaseEntity {

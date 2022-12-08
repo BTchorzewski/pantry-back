@@ -1,17 +1,5 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { ItemService } from './item.service';
-import { CreateItemDto } from '../pantry/dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
-import { UserId } from '../decorators/userId.decorator';
 
 @Controller('item')
 export class ItemController {

@@ -32,13 +32,13 @@ export class PantryEntity extends BaseEntity {
     name: 'user',
     type: () => UserEntity,
   })
-  @ManyToOne((type) => UserEntity, (user) => user.pantries)
+  @ManyToOne(() => UserEntity, (user) => user.pantries)
   user: UserEntity;
   @ApiModelProperty({
     name: 'items',
     type: () => ItemEntity,
   })
-  @OneToMany((type) => ItemEntity, (item) => item.pantry, { eager: true })
+  @OneToMany(() => ItemEntity, (item) => item.pantry, { eager: true })
   @JoinTable()
   items: ItemEntity[];
 }

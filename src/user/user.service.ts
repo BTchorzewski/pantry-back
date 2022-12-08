@@ -10,7 +10,6 @@ import { UserEntity } from '../entities/user.entity';
 import { EmailService } from '../email/email.service';
 import { Raw } from 'typeorm';
 import { UserRegistrationRes } from '../types';
-import { LoggedUser, UserForLogin } from '../interfaces/user/user';
 
 @Injectable()
 export class UserService {

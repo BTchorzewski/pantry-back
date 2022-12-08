@@ -1,12 +1,6 @@
-import {
-  FetchShortPantriesResponse,
-  ShortPantry,
-  Stats,
-} from '../../interfaces';
-import { PantryEntity } from '../../entities/pantry.entity';
+import { Stats } from '../../types';
 import { ApiProperty } from '@nestjs/swagger';
 import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
-import { ItemEntity } from '../../entities/item.entity';
 
 export class StatsPantry implements Stats {
   @ApiProperty({ example: 10 })

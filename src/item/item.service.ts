@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateItemDto } from '../pantry/dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
 import { PantryEntity } from '../entities/pantry.entity';
 import { ItemEntity } from '../entities/item.entity';
 import { UserEntity } from '../entities/user.entity';
@@ -10,8 +9,7 @@ import {
   GetItemResponse,
   Stats,
   UpdateItemResponse,
-  UpdatePantryResponse,
-} from '../interfaces';
+} from '../types';
 import * as moment from 'moment';
 import { Raw } from 'typeorm';
 @Injectable()

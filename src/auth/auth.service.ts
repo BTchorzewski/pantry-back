@@ -6,13 +6,12 @@ import {
   HttpStatus,
   Inject,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { hash, compare } from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../entities/user.entity';
-import { TokensRes } from '../interfaces';
+import { TokensRes } from '../types';
 import { config } from '../config/config';
 @Injectable()
 export class AuthService {
