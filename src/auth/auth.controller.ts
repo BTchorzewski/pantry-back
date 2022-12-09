@@ -5,19 +5,20 @@ import {
   Post,
   UseGuards,
   Get,
+  Res,
+  HttpCode,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { UserObj } from '../decorators/userObj.decorator';
 import { UserId } from '../decorators/userId.decorator';
-import { AccessJwtGuard } from '../guards/access-jwt.guard';
 import { RefreshJwtGuard } from '../guards/refresh-jwt.guard';
-import { RefreshToken } from '../decorators/RefreshToken.decorator';
+import { RefreshTokenCookie } from '../decorators/RefreshToken.decorator';
 import { TokensRes } from '../types';
 import {
   ApiBadRequestResponse,
-  ApiBearerAuth,
   ApiBody,
+  ApiCookieAuth,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiOperation,
@@ -34,6 +35,8 @@ import {
   ApiInternalServerErrorSwagger,
   ApiUnauthorizedRespondSwagger,
 } from '../swagger/models/general';
+import { Response } from 'express';
+import { config } from '../config/config';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -41,44 +44,73 @@ export class AuthController {
   constructor(
     @Inject(forwardRef(() => AuthService)) private authService: AuthService,
   ) {}
-
   @Post('/login')
+  @HttpCode(200)
   // authentication section
   @UseGuards(LocalAuthGuard)
   // swagger section
-  @ApiOperation({ description: 'Login to api.' })
+  @ApiOperation({
+    description:
+      'This route lets you login to the API. The route sends a json with an access token and it sets a refresh token up in a cookie.',
+  })
   @ApiBody({ type: LoginDto })
   @ApiOkResponse({ type: ValidLoginResSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiBadRequestResponse({ type: InvalidEmailResSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  login(@UserObj() user): Promise<TokensRes> {
-    return this.authService.login(user);
+  async login(
+    @UserObj() user,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<TokensRes> {
+    const { accessToken, refreshToken } = await this.authService.login(user);
+    res.cookie('token', refreshToken, {
+      httpOnly: true,
+      maxAge: 14 * 1000 * 60,
+    });
+    return { accessToken };
   }
 
   @Get('/logout')
   // authentication section
-  @ApiBearerAuth('accessToken')
-  @UseGuards(AccessJwtGuard)
+  @UseGuards(RefreshJwtGuard)
   // swagger section
+  @ApiCookieAuth('refreshToken')
   @ApiOperation({ description: 'Logout to api.' })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiOkResponse({ type: ValidLogoutRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  logout(@UserId() id): Promise<any> {
+  logout(
+    @UserId() id,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<any> {
+    res.clearCookie('token');
     return this.authService.logout(id);
   }
 
   @Get('/refresh-token')
   // authentication section
-  @ApiBearerAuth('refreshToken')
   @UseGuards(RefreshJwtGuard)
   // swagger token
-  @ApiOperation({ description: 'Refresh JWT tokens' })
+  @ApiCookieAuth('refreshToken')
+  @ApiOperation({
+    description: `This route uses JWT cookie auth, please login before using it. You don't need set a cookie manually, Swagger will set it up automatically.`,
+  })
   @ApiOkResponse({ type: ValidLoginResSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
-  refreshToken(@UserId() id, @RefreshToken() token): Promise<TokensRes> {
-    return this.authService.refreshToken(id, token);
+  async refreshToken(
+    @UserId() id,
+    @RefreshTokenCookie() token,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<TokensRes> {
+    const { accessToken, refreshToken } = await this.authService.refreshToken(
+      id,
+      token,
+    );
+    res.cookie('token', refreshToken, {
+      httpOnly: true,
+      maxAge: 14 * 1000 * 60,
+    });
+    return { accessToken };
   }
 }

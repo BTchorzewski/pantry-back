@@ -1,3 +1,35 @@
+export interface Confing {
+  corsOrigin: string | undefined;
+  appPort: number;
+  db: {
+    host: string;
+    port: 3306;
+    username: string;
+    password: string;
+    database: string;
+  };
+  jwt: {
+    accessToken: {
+      key: string;
+      expiresIn: string;
+    };
+    refreshToken: {
+      key: string;
+      expiresIn: string;
+    };
+  };
+  // Important! email properties are set up for the smtp server from the documentation.
+  // change it if you want to use your own smtp server.
+  email: {
+    host: string;
+    port: 2525;
+    auth: {
+      user: string;
+      password: string;
+    };
+  };
+}
+
 export const config = {
   corsOrigin: undefined,
   appPort: 3001,
@@ -9,8 +41,14 @@ export const config = {
     database: 'database',
   },
   jwt: {
-    accessToken: 'access token secrete key',
-    refreshToken: 'refresh token secrete key',
+    accessToken: {
+      key: 'access token secrete key',
+      expiresIn: '10m',
+    },
+    refreshToken: {
+      key: 'refresh token secrete key',
+      expiresIn: '15d',
+    },
   },
   // Important! email properties are set up for the smtp server from the documentation.
   // change it if you want to use your own smtp server.
@@ -22,4 +60,4 @@ export const config = {
       password: 'password',
     },
   },
-};
+} as Confing;

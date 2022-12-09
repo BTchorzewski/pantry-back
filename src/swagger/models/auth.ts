@@ -3,8 +3,6 @@ import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-prop
 export class ValidLoginResSwagger {
   @ApiModelProperty()
   accessToken: string;
-  @ApiModelProperty()
-  refreshToken: string;
 }
 
 export class InvalidEmailResSwagger {

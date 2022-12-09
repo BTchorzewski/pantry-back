@@ -32,15 +32,7 @@ async function bootstrap() {
       },
       'accessToken',
     )
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        in: 'header',
-        bearerFormat: 'JWT',
-      },
-      'refreshToken',
-    )
+    .addCookieAuth('token')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {

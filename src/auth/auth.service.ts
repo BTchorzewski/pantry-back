@@ -74,15 +74,15 @@ export class AuthService {
     const accessToken = this.jwtService.sign(
       { id: userId },
       {
-        expiresIn: '15m',
-        privateKey: config.jwt.accessToken,
+        expiresIn: config.jwt.accessToken.expiresIn,
+        privateKey: config.jwt.accessToken.key,
       },
     );
     const refreshToken = this.jwtService.sign(
       { id: userId },
       {
-        expiresIn: '14d',
-        privateKey: config.jwt.refreshToken,
+        expiresIn: config.jwt.refreshToken.expiresIn,
+        privateKey: config.jwt.refreshToken.key,
       },
     );
 
