@@ -58,8 +58,8 @@ export class PantryController {
     private itemService: ItemService,
   ) {}
 
-  @Get('/')
   // Authentication section
+  @Get('/')
   @ApiBearerAuth('accessToken')
   @UseGuards(AccessJwtGuard)
   // Swagger section
