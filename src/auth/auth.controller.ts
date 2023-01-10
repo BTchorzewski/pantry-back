@@ -35,8 +35,15 @@ import {
   ApiInternalServerErrorSwagger,
   ApiUnauthorizedRespondSwagger,
 } from '../swagger/models/general';
-import { Response } from 'express';
-import { config } from '../config/config';
+import { CookieOptions, Response } from 'express';
+
+const cookieConfig = {
+  httpOnly: true,
+  maxAge: 90 * 1000 * 60,
+  domain: 'localhost',
+  sameSite: 'none',
+  secure: true,
+} as CookieOptions;
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -63,12 +70,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ): Promise<TokensRes> {
     const { accessToken, refreshToken } = await this.authService.login(user);
-    res.cookie('token', refreshToken, {
-      httpOnly: true,
-      maxAge: 14 * 1000 * 60,
-      sameSite: 'strict',
-      secure: true,
-    });
+    res.cookie('token', refreshToken, cookieConfig);
     return { accessToken };
   }
 
@@ -109,12 +111,7 @@ export class AuthController {
       id,
       token,
     );
-    res.cookie('token', refreshToken, {
-      httpOnly: true,
-      maxAge: 14 * 1000 * 60,
-      sameSite: 'strict',
-      secure: true,
-    });
+    res.cookie('token', refreshToken, cookieConfig);
     return { accessToken };
   }
 }
