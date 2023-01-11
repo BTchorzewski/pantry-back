@@ -68,6 +68,7 @@ export class AuthService {
       .where('id = :id AND refreshToken IS NOT NULL', { id: userId })
       .set({ refreshToken: null })
       .execute();
+    console.log(result);
   }
 
   generatesTokens(userId: string): TokensRes {
