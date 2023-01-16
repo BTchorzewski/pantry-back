@@ -54,6 +54,7 @@ export class AuthService {
 
     if (!isValidToken) throw new ForbiddenException();
     const { accessToken, refreshToken } = this.generatesTokens(userId);
+    await this.updateRefreshToken(userId, refreshToken);
     return {
       refreshToken,
       accessToken,
@@ -68,7 +69,6 @@ export class AuthService {
       .where('id = :id AND refreshToken IS NOT NULL', { id: userId })
       .set({ refreshToken: null })
       .execute();
-    console.log(result);
   }
 
   generatesTokens(userId: string): TokensRes {
