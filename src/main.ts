@@ -5,8 +5,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(cookieParser());
   app.enableCors({
-    origin: '*',
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });
   app.useGlobalPipes(
     new ValidationPipe({
@@ -17,12 +20,10 @@ async function bootstrap() {
     }),
   );
 
-  app.use(cookieParser());
-
   const config = new DocumentBuilder()
     .setTitle('Pantries API')
     .setDescription('The pantries API description')
-    .setVersion('1.0')
+    .setVersion('1.0.2')
     .addBearerAuth(
       {
         type: 'http',

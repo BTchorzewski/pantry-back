@@ -54,6 +54,7 @@ export class AuthService {
 
     if (!isValidToken) throw new ForbiddenException();
     const { accessToken, refreshToken } = this.generatesTokens(userId);
+    await this.updateRefreshToken(userId, refreshToken);
     return {
       refreshToken,
       accessToken,
