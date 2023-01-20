@@ -23,7 +23,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Pantries API')
     .setDescription('The pantries API description')
-    .setVersion('1.0.2')
+    .setVersion('1.0.3')
     .addBearerAuth(
       {
         type: 'http',

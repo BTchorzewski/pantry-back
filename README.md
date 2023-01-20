@@ -1,4 +1,4 @@
-# The pantry app 1.0.0
+# The pantry app
 
 The pantry app allows you to manage food products in your refrigerators and pantries. It provides tools to keep your
 products fresh and help you not waste food. Receive information about products that are near expiry date.

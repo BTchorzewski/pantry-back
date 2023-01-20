@@ -133,7 +133,7 @@ export class ItemService {
     return await ItemEntity.countBy({
       pantry: { id: pantryId },
       expiration: Raw(
-        (expiration) => `DATEDIFF(${expiration}, NOW()) BETWEEN 1 AND 4`,
+        (expiration) => `DATEDIFF(${expiration}, NOW()) BETWEEN 1 AND 7`,
       ),
     });
   }
