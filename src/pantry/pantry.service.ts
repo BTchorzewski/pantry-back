@@ -11,8 +11,8 @@ import {
   CreatePantryResponse,
   DeletePantryResponse,
   FetchPantryByIdResponse,
-  FetchShortPantriesResponse,
-  ShortPantry,
+  FetchPantriesWithStatsResponse,
+  PantriesWithStats,
   UpdatePantryResponse,
 } from '../types';
 import { ItemEntity } from '../entities/item.entity';
@@ -26,7 +26,7 @@ export class PantryService {
 
   async fetchShortPantries(
     userId: string,
-  ): Promise<FetchShortPantriesResponse> {
+  ): Promise<FetchPantriesWithStatsResponse> {
     const results = await PantryEntity.findBy({
       user: {
         id: userId,
@@ -39,7 +39,7 @@ export class PantryService {
           id: pantry.id,
           name: pantry.name,
           stats: await this.itemService.createStats(pantry.id),
-        } as ShortPantry;
+        } as PantriesWithStats;
       }),
     );
 

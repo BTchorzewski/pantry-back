@@ -2,7 +2,7 @@ import { Stats } from '../../types';
 import { ApiProperty } from '@nestjs/swagger';
 import { ApiModelProperty } from '@nestjs/swagger/dist/decorators/api-model-property.decorator';
 
-export class StatsPantry implements Stats {
+export class QuantityOfItemsInPantry implements Stats {
   @ApiProperty({ example: 10 })
   total: number;
   @ApiProperty({ example: 5 })
@@ -13,18 +13,18 @@ export class StatsPantry implements Stats {
   expired: number;
 }
 
-export class BasicPantry {
+export class PantryWithStats {
   @ApiProperty({ example: 'dbf19a29-a780-4e95-b54b-4b7ea9169b42' })
   id: string;
   @ApiProperty({ example: 'Building 2, room 203' })
   name: string;
-  @ApiModelProperty({ type: StatsPantry })
-  stats: StatsPantry;
+  @ApiModelProperty({ type: QuantityOfItemsInPantry })
+  stats: QuantityOfItemsInPantry;
 }
 
-export class FetchPantriesResponse {
-  @ApiProperty({ type: [BasicPantry] })
-  data: BasicPantry[];
+export class FetchPantriesWithStatsResponse {
+  @ApiProperty({ type: [PantryWithStats] })
+  data: PantryWithStats[];
   @ApiProperty({ example: 'Succeed' })
   message: string;
 }
@@ -47,7 +47,7 @@ export class ItemModel {
   expiration: Date;
 }
 
-export class CompletePantryModel {
+export class PantryModel {
   @ApiProperty({ example: 'dbf19a29-a780-4e95-b54b-4b7ea9169b42' })
   id: string;
   @ApiProperty({ example: 'Building 2, room 203' })
@@ -62,8 +62,8 @@ export class FetchCompletePantryByIResponse {
     example: 'Succeed',
   })
   message: string;
-  @ApiProperty({ type: CompletePantryModel })
-  data: CompletePantryModel;
+  @ApiProperty({ type: PantryModel })
+  data: PantryModel;
 }
 
 export class DeletedPantryResponse {

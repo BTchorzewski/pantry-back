@@ -15,7 +15,7 @@ import {
   CreatePantryResponse,
   DeletePantryResponse,
   FetchPantryByIdResponse,
-  FetchShortPantriesResponse,
+  FetchPantriesWithStatsResponse as IFetchPantriesWithStatsResponse,
   UpdatePantryResponse,
 } from '../types';
 import { ItemService } from '../item/item.service';
@@ -40,7 +40,7 @@ import {
   CreatedPantryResponse,
   DeletedPantryResponse,
   FetchCompletePantryByIResponse,
-  FetchPantriesResponse,
+  FetchPantriesWithStatsResponse,
   GetItemByIdResponse,
 } from '../swagger/models/pantry';
 import {
@@ -50,7 +50,7 @@ import {
   BadRequestResponseSwagger,
 } from '../swagger/models/general';
 
-@ApiTags('CRUD for Pantries and Items')
+@ApiTags('CRUD and statistics for Pantries and Items')
 @Controller('pantry')
 export class PantryController {
   constructor(
@@ -59,19 +59,19 @@ export class PantryController {
   ) {}
 
   // Authentication section
-  @Get('/')
+  @Get('/stats')
   @ApiBearerAuth('accessToken')
   @UseGuards(AccessJwtGuard)
   // Swagger section
-  @ApiOperation({ description: 'Fetch all pantries.' })
-  @ApiOkResponse({ type: FetchPantriesResponse })
+  @ApiOperation({ description: 'Fetches pantries with quantity of items.' })
+  @ApiOkResponse({ type: FetchPantriesWithStatsResponse })
   @ApiBadRequestResponse({ type: BadRequestResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   fetchPantries(
     @UserId() userId,
     // @MockedUserId() userId,
-  ): Promise<FetchShortPantriesResponse> {
+  ): Promise<FetchPantriesWithStatsResponse> {
     return this.pantryService.fetchShortPantries(userId);
   }
 

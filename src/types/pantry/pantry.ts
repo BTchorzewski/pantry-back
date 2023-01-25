@@ -12,15 +12,15 @@ export interface Stats {
   expired: number;
 }
 
-export interface ShortPantry {
+export interface PantriesWithStats {
   id: string;
   name: string;
   stats: Stats;
 }
 
-export interface FetchShortPantriesResponse {
+export interface FetchPantriesWithStatsResponse {
   message: string;
-  data: ShortPantry[];
+  data: PantriesWithStats[];
 }
 
 export interface UpdatePantryResponse {
