@@ -24,7 +24,7 @@ export class PantryService {
     @Inject(forwardRef(() => ItemService)) private itemService: ItemService,
   ) {}
 
-  async fetchShortPantries(
+  async fetchPantriesWithStats(
     userId: string,
   ): Promise<FetchPantriesWithStatsResponse> {
     const results = await PantryEntity.findBy({
@@ -44,6 +44,22 @@ export class PantryService {
     );
 
     return { message: 'Succeed', data: pantries };
+  }
+
+  async fetchPantries(userId: string): Promise<any> {
+    const data = await PantryEntity.findBy({
+      user: {
+        id: userId,
+      },
+    });
+    console.log({ data });
+    if (data === null)
+      throw new HttpException('The pantry not found', HttpStatus.NOT_FOUND);
+
+    return {
+      message: 'Succeed',
+      data: data,
+    };
   }
 
   async fetchCompletePantryById(

@@ -17,6 +17,7 @@ import {
   FetchPantryByIdResponse,
   FetchPantriesWithStatsResponse as IFetchPantriesWithStatsResponse,
   UpdatePantryResponse,
+  FetchPantriesResponse,
 } from '../types';
 import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -49,6 +50,7 @@ import {
   ApiUnauthorizedRespondSwagger,
   BadRequestResponseSwagger,
 } from '../swagger/models/general';
+import { MockedUserId } from '../decorators/mockUserId.decorator';
 
 @ApiTags('CRUD and statistics for Pantries and Items')
 @Controller('pantry')
@@ -63,7 +65,7 @@ export class PantryController {
   @ApiBearerAuth('accessToken')
   @UseGuards(AccessJwtGuard)
   // Swagger section
-  @ApiOperation({ description: 'Fetches pantries with quantity of items.' })
+  @ApiOperation({ description: 'Fetches pantries with statistics' })
   @ApiOkResponse({ type: FetchPantriesWithStatsResponse })
   @ApiBadRequestResponse({ type: BadRequestResponseSwagger })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
@@ -72,7 +74,24 @@ export class PantryController {
     @UserId() userId,
     // @MockedUserId() userId,
   ): Promise<FetchPantriesWithStatsResponse> {
-    return this.pantryService.fetchShortPantries(userId);
+    return this.pantryService.fetchPantriesWithStats(userId);
+  }
+
+  @Get('/')
+  // Authentication section
+  // @ApiBearerAuth('accessToken')
+  // @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiOperation({ description: 'Fetches pantries with items' })
+  // @ApiOkResponse({ type: FetchCompletePantryByIResponse })
+  // @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  // @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  // @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
+  fetchPantry(
+    // @UserId() userId,
+    @MockedUserId() userId,
+  ): Promise<FetchPantriesResponse> {
+    return this.pantryService.fetchPantries(userId);
   }
 
   @Get('/:pantryId')

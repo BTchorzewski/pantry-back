@@ -36,3 +36,5 @@ export interface FetchPantryByIdResponse {
   message: string;
   data: PantryEntity;
 }
+
+export type FetchPantriesResponse = FetchPantryByIdResponse;
