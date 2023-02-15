@@ -17,7 +17,6 @@ import {
   FetchPantryByIdResponse,
   FetchPantriesWithStatsResponse as IFetchPantriesWithStatsResponse,
   UpdatePantryResponse,
-  FetchPantriesResponse,
 } from '../types';
 import { ItemService } from '../item/item.service';
 import { CreateItemDto } from './dto/create-item.dto';
@@ -43,6 +42,7 @@ import {
   FetchCompletePantryByIResponse,
   FetchPantriesWithStatsResponse,
   GetItemByIdResponse,
+  FetchPantriesWithItemsResponse,
 } from '../swagger/models/pantry';
 import {
   ApiInternalServerErrorSwagger,
@@ -79,18 +79,18 @@ export class PantryController {
 
   @Get('/')
   // Authentication section
-  // @ApiBearerAuth('accessToken')
-  // @UseGuards(AccessJwtGuard)
+  @ApiBearerAuth('accessToken')
+  @UseGuards(AccessJwtGuard)
   // Swagger section
   @ApiOperation({ description: 'Fetches pantries with items' })
-  // @ApiOkResponse({ type: FetchCompletePantryByIResponse })
-  // @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
-  // @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
-  // @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
+  @ApiOkResponse({ type: FetchPantriesWithItemsResponse })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   fetchPantry(
-    // @UserId() userId,
-    @MockedUserId() userId,
-  ): Promise<FetchPantriesResponse> {
+    @UserId() userId,
+    // @MockedUserId() userId,
+  ): Promise<FetchPantriesWithItemsResponse> {
     return this.pantryService.fetchPantries(userId);
   }
 

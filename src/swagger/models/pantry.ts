@@ -82,3 +82,13 @@ export class GetItemByIdResponse {
   @ApiProperty({ example: '2022-11-23T19:11:41.000Z' })
   expiration: Date;
 }
+
+export class FetchPantriesWithItemsResponse {
+  @ApiProperty({
+    name: 'message',
+    example: 'Succeed',
+  })
+  message: string;
+  @ApiProperty({ type: [PantryModel] })
+  data: PantryModel[];
+}
