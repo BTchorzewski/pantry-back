@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from '../entities/user.entity';
 import { TokensRes } from '../types';
 import { config } from '../config/config';
+import { isEmail } from 'class-validator';
 @Injectable()
 export class AuthService {
   constructor(
@@ -43,6 +44,7 @@ export class AuthService {
     return {
       id: user.id,
       email: user.email,
+      login: user.login,
     };
   }
 
@@ -53,7 +55,10 @@ export class AuthService {
       JSON.stringify(user.refreshToken) === JSON.stringify(token);
 
     if (!isValidToken) throw new ForbiddenException();
-    const { accessToken, refreshToken } = this.generatesTokens(userId);
+    const { accessToken, refreshToken } = this.generatesTokens(
+      userId,
+      user.login,
+    );
     await this.updateRefreshToken(userId, refreshToken);
     return {
       refreshToken,
@@ -71,16 +76,16 @@ export class AuthService {
       .execute();
   }
 
-  generatesTokens(userId: string): TokensRes {
+  generatesTokens(userId: string, login: string): TokensRes {
     const accessToken = this.jwtService.sign(
-      { id: userId },
+      { id: userId, login },
       {
         expiresIn: config.jwt.accessToken.expiresIn,
         privateKey: config.jwt.accessToken.key,
       },
     );
     const refreshToken = this.jwtService.sign(
-      { id: userId },
+      { id: userId, login },
       {
         expiresIn: config.jwt.refreshToken.expiresIn,
         privateKey: config.jwt.refreshToken.key,
@@ -100,8 +105,11 @@ export class AuthService {
     await user.save();
   }
 
-  async login(user: { id: string; email: string }): Promise<TokensRes> {
-    const { accessToken, refreshToken } = this.generatesTokens(user.id);
+  async login(user: { id: string; login: string }): Promise<TokensRes> {
+    const { accessToken, refreshToken } = this.generatesTokens(
+      user.id,
+      user.login,
+    );
     await this.updateRefreshToken(user.id, refreshToken);
     return {
       accessToken,
