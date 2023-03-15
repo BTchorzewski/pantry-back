@@ -38,7 +38,7 @@ export class PantryEntity extends BaseEntity {
     name: 'items',
     type: () => ItemEntity,
   })
-  @OneToMany(() => ItemEntity, (item) => item.pantry, { eager: true })
+  @OneToMany(() => ItemEntity, (item) => item.pantry)
   @JoinTable()
   items: ItemEntity[];
 }

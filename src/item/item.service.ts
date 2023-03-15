@@ -199,4 +199,34 @@ export class ItemService {
     });
     return freshItems;
   }
+
+  async getSoonExpiredItemsInPantries(userId: string) {
+    const soonExpiredItems = await PantryEntity.find({
+      where: {
+        user: {
+          id: userId,
+        },
+        items: {
+          expiration: Raw(
+            (expiration) => `DATEDIFF(${expiration}, NOW()) BETWEEN 1 AND 7`,
+          ),
+        },
+      },
+      relations: {
+        items: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        items: {
+          id: true,
+          name: true,
+          expiration: true,
+          createdAt: true,
+        },
+      },
+    });
+
+    return soonExpiredItems;
+  }
 }
