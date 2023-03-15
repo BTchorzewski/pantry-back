@@ -287,4 +287,25 @@ export class PantryController {
   ) {
     return this.itemService.getSoonExpiredItemsInPantry(pantryId, userId);
   }
+
+  @Get('/item/fresh/:pantryId')
+  // Authentication section
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({
+    description: 'Fetching fresh items from a specific pantry.',
+  })
+  @ApiOkResponse({
+    type: [ItemModel],
+  })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
+  getFreshItemsFromPantry(
+    @Param('pantryId', ParseUUIDPipe) pantryId: string,
+    @MockedUserId() userId: string,
+  ) {
+    return this.itemService.getFreshItemsFromPantry(pantryId, userId);
+  }
 }

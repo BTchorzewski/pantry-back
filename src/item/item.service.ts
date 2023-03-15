@@ -183,4 +183,20 @@ export class ItemService {
     });
     return soonExpiredItems;
   }
+
+  async getFreshItemsFromPantry(
+    pantryId: string,
+    userId: string,
+  ): Promise<ItemModel[]> {
+    const freshItems = await ItemEntity.findBy({
+      pantry: {
+        id: pantryId,
+      },
+      user: {
+        id: userId,
+      },
+      expiration: Raw((expiration) => `DATEDIFF(${expiration}, NOW()) > 7`),
+    });
+    return freshItems;
+  }
 }
