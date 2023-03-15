@@ -229,4 +229,32 @@ export class ItemService {
 
     return soonExpiredItems;
   }
+
+  async getExpiredItemsInPantries(userId: string) {
+    const expiredItems = await PantryEntity.find({
+      where: {
+        user: {
+          id: userId,
+        },
+        items: {
+          expiration: Raw((expiration) => `DATEDIFF(${expiration}, NOW()) < 1`),
+        },
+      },
+      relations: {
+        items: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        items: {
+          id: true,
+          name: true,
+          expiration: true,
+          createdAt: true,
+        },
+      },
+    });
+
+    return expiredItems;
+  }
 }

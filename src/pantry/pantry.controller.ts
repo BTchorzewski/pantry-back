@@ -309,6 +309,7 @@ export class PantryController {
   ) {
     return this.itemService.getFreshItemsFromPantry(pantryId, userId);
   }
+
   @Get('/item/pantries/soon-expired')
   // Authentication section
   @UseGuards(AccessJwtGuard)
@@ -326,5 +327,24 @@ export class PantryController {
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   getSoonItemsGroupedByPantries(@UserId() userId: string) {
     return this.itemService.getSoonExpiredItemsInPantries(userId);
+  }
+
+  @Get('/item/pantries/expired')
+  // Authentication section
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({
+    description:
+      'Fetching soon expired items that owns a user grouped by pantries.',
+  })
+  @ApiOkResponse({
+    type: [PantryModel],
+  })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
+  getExpiredItemsGroupedByPantries(@MockedUserId() userId: string) {
+    return this.itemService.getExpiredItemsInPantries(userId);
   }
 }
