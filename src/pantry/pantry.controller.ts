@@ -42,7 +42,7 @@ import {
   FetchCompletePantryByIResponse,
   FetchPantriesWithStatsResponse,
   GetItemByIdResponse,
-  FetchPantriesWithItemsResponse,
+  FetchPantriesWithItemsResponse, ItemModel
 } from '../swagger/models/pantry';
 import {
   ApiInternalServerErrorSwagger,
@@ -243,5 +243,26 @@ export class PantryController {
     // @MockedUserId() userId,
   ): Promise<DeletedItemResponse> {
     return this.itemService.deleteItemById(itemId, userId);
+  }
+
+  @Get('/item/expired/:pantryId')
+  // Authentication section
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({
+    description: 'Fetching expired Items from a specific pantry.',
+  })
+  @ApiOkResponse({
+    type: [ItemModel],
+  })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
+  getExpiredItems(
+    @Param('pantryId', ParseUUIDPipe) pantryId: string,
+    @UserId() userId,
+  ): Promise<ItemModel[]> {
+    return this.itemService.getExpiredItemsByPantryId(pantryId, userId);
   }
 }

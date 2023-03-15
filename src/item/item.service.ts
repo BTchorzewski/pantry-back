@@ -12,6 +12,7 @@ import {
 } from '../types';
 import * as moment from 'moment';
 import { Raw } from 'typeorm';
+import { ItemModel } from '../swagger/models/pantry';
 @Injectable()
 export class ItemService {
   async create(
@@ -150,5 +151,21 @@ export class ItemService {
       expiredSoon: await this.countExpiredSoonItemsInPantry(pantryId),
       expired: await this.countExpiredItemsInPantry(pantryId),
     };
+  }
+
+  async getExpiredItemsByPantryId(
+    pantryId: string,
+    userId: string,
+  ): Promise<ItemModel[]> {
+    const expiredItems = await ItemEntity.findBy({
+      pantry: {
+        id: pantryId,
+      },
+      user: {
+        id: userId,
+      },
+      expiration: Raw((expiration) => `DATEDIFF(${expiration}, NOW()) < 1`),
+    });
+    return expiredItems;
   }
 }
