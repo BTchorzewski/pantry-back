@@ -130,7 +130,7 @@ export class ItemService {
       expiration: Raw((expiration) => `DATEDIFF(${expiration}, NOW()) > 7`),
     });
   }
-  async countExpiredSoonItemsInPantry(pantryId: string): Promise<number> {
+  async countSoonExpiredItemsInPantry(pantryId: string): Promise<number> {
     return await ItemEntity.countBy({
       pantry: { id: pantryId },
       expiration: Raw(
@@ -148,12 +148,12 @@ export class ItemService {
     return {
       total: await this.countTotalItemsInPantry(pantryId),
       fresh: await this.countFreshItemsInPantry(pantryId),
-      expiredSoon: await this.countExpiredSoonItemsInPantry(pantryId),
+      expiredSoon: await this.countSoonExpiredItemsInPantry(pantryId),
       expired: await this.countExpiredItemsInPantry(pantryId),
     };
   }
 
-  async getExpiredItemsByPantryId(
+  async getExpiredItemsInPantry(
     pantryId: string,
     userId: string,
   ): Promise<ItemModel[]> {

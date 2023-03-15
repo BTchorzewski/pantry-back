@@ -263,6 +263,6 @@ export class PantryController {
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
     @UserId() userId,
   ): Promise<ItemModel[]> {
-    return this.itemService.getExpiredItemsByPantryId(pantryId, userId);
+    return this.itemService.getExpiredItemsInPantry(pantryId, userId);
   }
 }
