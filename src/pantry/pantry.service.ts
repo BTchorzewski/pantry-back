@@ -52,7 +52,6 @@ export class PantryService {
         id: userId,
       },
     });
-    console.log({ data });
     if (data === null)
       throw new HttpException('The pantry not found', HttpStatus.NOT_FOUND);
 
