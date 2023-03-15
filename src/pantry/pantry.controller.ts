@@ -42,7 +42,8 @@ import {
   FetchCompletePantryByIResponse,
   FetchPantriesWithStatsResponse,
   GetItemByIdResponse,
-  FetchPantriesWithItemsResponse, ItemModel
+  FetchPantriesWithItemsResponse,
+  ItemModel,
 } from '../swagger/models/pantry';
 import {
   ApiInternalServerErrorSwagger,
@@ -264,5 +265,26 @@ export class PantryController {
     @UserId() userId,
   ): Promise<ItemModel[]> {
     return this.itemService.getExpiredItemsInPantry(pantryId, userId);
+  }
+
+  @Get('/item/soon-expired/:pantryId')
+  // Authentication section
+  @UseGuards(AccessJwtGuard)
+  // Swagger section
+  @ApiBearerAuth('accessToken')
+  @ApiOperation({
+    description: 'Fetching soon expired items from a specific pantry.',
+  })
+  @ApiOkResponse({
+    type: [ItemModel],
+  })
+  @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
+  @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
+  @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
+  getSoonExpiredItems(
+    @Param('pantryId', ParseUUIDPipe) pantryId: string,
+    @UserId() userId: string,
+  ) {
+    return this.itemService.getSoonExpiredItemsInPantry(pantryId, userId);
   }
 }
