@@ -265,7 +265,7 @@ export class PantryController {
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
     @UserId() userId,
   ): Promise<ItemModel[]> {
-    return this.itemService.getExpiredItemsInPantry(pantryId, userId);
+    return this.itemService.getExpiredItemsFromPantry(pantryId, userId);
   }
 
   @Get('/item/soon-expired/:pantryId')
@@ -286,7 +286,7 @@ export class PantryController {
     @Param('pantryId', ParseUUIDPipe) pantryId: string,
     @UserId() userId: string,
   ) {
-    return this.itemService.getSoonExpiredItemsInPantry(pantryId, userId);
+    return this.itemService.getSoonExpiredItemsFromPantry(pantryId, userId);
   }
 
   @Get('/item/fresh/:pantryId')
@@ -326,7 +326,7 @@ export class PantryController {
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   getSoonItemsGroupedByPantries(@UserId() userId: string) {
-    return this.itemService.getSoonExpiredItemsInPantries(userId);
+    return this.itemService.getSoonExpiredItemsFromPantries(userId);
   }
 
   @Get('/item/pantries/expired')
@@ -345,6 +345,6 @@ export class PantryController {
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
   getExpiredItemsGroupedByPantries(@MockedUserId() userId: string) {
-    return this.itemService.getExpiredItemsInPantries(userId);
+    return this.itemService.getExpiredItemsFromPantries(userId);
   }
 }

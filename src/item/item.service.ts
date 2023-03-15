@@ -153,7 +153,7 @@ export class ItemService {
     };
   }
 
-  async getExpiredItemsInPantry(
+  async getExpiredItemsFromPantry(
     pantryId: string,
     userId: string,
   ): Promise<ItemModel[]> {
@@ -169,7 +169,7 @@ export class ItemService {
     return expiredItems;
   }
 
-  async getSoonExpiredItemsInPantry(pantryId: string, userId: string) {
+  async getSoonExpiredItemsFromPantry(pantryId: string, userId: string) {
     const soonExpiredItems = await ItemEntity.findBy({
       pantry: {
         id: pantryId,
@@ -200,7 +200,7 @@ export class ItemService {
     return freshItems;
   }
 
-  async getSoonExpiredItemsInPantries(userId: string) {
+  async getSoonExpiredItemsFromPantries(userId: string) {
     const soonExpiredItems = await PantryEntity.find({
       where: {
         user: {
@@ -230,7 +230,7 @@ export class ItemService {
     return soonExpiredItems;
   }
 
-  async getExpiredItemsInPantries(userId: string) {
+  async getExpiredItemsFromPantries(userId: string) {
     const expiredItems = await PantryEntity.find({
       where: {
         user: {
@@ -255,6 +255,62 @@ export class ItemService {
       },
     });
 
+    return expiredItems;
+  }
+  // @todo create Cron for this.
+  async getExpiredItemsFromUsers() {
+    const expiredItems = await UserEntity.find({
+      where: {
+        isActivated: true,
+        pantries: {
+          items: {
+            expiration: Raw(
+              (expiration) => `DATEDIFF(${expiration}, NOW()) < 1`,
+            ),
+          },
+        },
+      },
+      relations: {
+        pantries: {
+          items: true,
+        },
+      },
+      select: {
+        email: true,
+        pantries: {
+          name: true,
+          items: true,
+        },
+      },
+    });
+    return expiredItems;
+  }
+
+  async getSoonExpiredItemsFromUsers() {
+    const expiredItems = await UserEntity.find({
+      where: {
+        isActivated: true,
+        pantries: {
+          items: {
+            expiration: Raw(
+              (expiration) => `DATEDIFF(${expiration}, NOW()) BETWEEN 1 AND 7`,
+            ),
+          },
+        },
+      },
+      relations: {
+        pantries: {
+          items: true,
+        },
+      },
+      select: {
+        email: true,
+        pantries: {
+          name: true,
+          items: true,
+        },
+      },
+    });
     return expiredItems;
   }
 }
