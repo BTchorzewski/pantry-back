@@ -43,3 +43,11 @@ export class ApiNotFoundResponseSwagger {
   @ApiProperty({ name: 'message', example: 'The pantry not found' })
   message: string;
 }
+
+export class OKRespondDeleteItem {
+  @ApiProperty({
+    name: 'message',
+    example: 'The item has been deleted.',
+  })
+  message: string;
+}

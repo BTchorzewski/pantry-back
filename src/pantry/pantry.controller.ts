@@ -49,6 +49,7 @@ import {
   ApiNotFoundResponseSwagger,
   ApiUnauthorizedRespondSwagger,
   BadRequestResponseSwagger,
+  OKRespondDeleteItem,
 } from '../swagger/models/general';
 import { MockedUserId } from '../decorators/mockUserId.decorator';
 
@@ -228,10 +229,11 @@ export class PantryController {
 
   @Delete('/item/:itemId')
   // Authentication section
-  @ApiBearerAuth('accessToken')
   @UseGuards(AccessJwtGuard)
   // Swagger section
+  @ApiBearerAuth('accessToken')
   @ApiOperation({ description: 'Delete an item by id.' })
+  @ApiOkResponse({ type: OKRespondDeleteItem })
   @ApiUnauthorizedResponse({ type: ApiUnauthorizedRespondSwagger })
   @ApiNotFoundResponse({ type: ApiNotFoundResponseSwagger })
   @ApiInternalServerErrorResponse({ type: ApiInternalServerErrorSwagger })
